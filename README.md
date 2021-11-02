@@ -12,7 +12,7 @@ Alfred 工作流，用于快速连接 Aliyun ECS/ECI/ACK 实例/容器；
 
 ### 连接 ECS 实例
 
-[!connect-ecs.gif](./gif/connect-ecs.gif)
+![connect-ecs.gif](https://raw.githubusercontent.com/treesong/alfred-cloud/main/gif/connect-ecs.gif)
 
 > 演示中的输入：
 > - ls ecs hangz [回车] // ecs hangzhou 地域
@@ -22,7 +22,7 @@ Alfred 工作流，用于快速连接 Aliyun ECS/ECI/ACK 实例/容器；
 
 ### 免登录 ECS，执行脚本
 
-[!run-command.gif](./gif/run-command.gif)
+![run-command.gif](https://raw.githubusercontent.com/treesong/alfred-cloud/main/gif/run-command.gif)
 
 
 > 演示中的输入：
@@ -36,19 +36,22 @@ Alfred 工作流，用于快速连接 Aliyun ECS/ECI/ACK 实例/容器；
 
 > 需要已安装 kubectl
 
-[!connect-ack-pod.gif](./gif/connect-ack-pod.gif)
+![connect-ack-pod.gif](https://raw.githubusercontent.com/treesong/alfred-cloud/main/gif/connect-ack-pod.gif)
 
 
 ### 连接 ECI 容器
 
 > 需要已安装 aliyun eci cli
 
-[!connect-eci-pod.gif](./gif/connect-eci-pod.gif)
+![connect-eci-pod.gif](https://raw.githubusercontent.com/treesong/alfred-cloud/main/gif/connect-eci-pod.gif)
 
 
 ### 切换 Aliyun Profile
 
-[!switch-profile.gif](./gif/switch-profile.gif)
+![switch-profile.gif](https://raw.githubusercontent.com/treesong/alfred-cloud/main/gif/switch-profile.gif)
 
 
 ### 打包为 alfredworkflow
+
+```shell
+```
