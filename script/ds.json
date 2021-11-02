@@ -1,0 +1,2563 @@
+{
+  "kind": "DaemonSetList",
+  "apiVersion": "apps/v1",
+  "metadata": {
+    "resourceVersion": "10154840"
+  },
+  "items": [
+    {
+      "metadata": {
+        "name": "ack-prometheus-gpu-exporter",
+        "namespace": "arms-prom",
+        "uid": "50940c68-e447-4608-b0f2-db8fb0598718",
+        "resourceVersion": "1425",
+        "generation": 1,
+        "creationTimestamp": "2021-09-24T03:35:58Z",
+        "annotations": {
+          "deprecated.daemonset.template.generation": "1"
+        },
+        "managedFields": [
+          {
+            "manager": "Go-http-client",
+            "operation": "Update",
+            "apiVersion": "apps/v1",
+            "time": "2021-09-24T03:35:58Z",
+            "fieldsType": "FieldsV1",
+            "fieldsV1": {"f:metadata":{"f:annotations":{".":{},"f:deprecated.daemonset.template.generation":{}}},"f:spec":{"f:revisionHistoryLimit":{},"f:selector":{},"f:template":{"f:metadata":{"f:labels":{".":{},"f:k8s-app":{}}},"f:spec":{"f:affinity":{".":{},"f:nodeAffinity":{".":{},"f:requiredDuringSchedulingIgnoredDuringExecution":{".":{},"f:nodeSelectorTerms":{}}}},"f:containers":{"k:{\"name\":\"node-gpu-exporter\"}":{".":{},"f:env":{".":{},"k:{\"name\":\"MY_NODE_NAME\"}":{".":{},"f:name":{},"f:valueFrom":{".":{},"f:fieldRef":{".":{},"f:apiVersion":{},"f:fieldPath":{}}}}},"f:image":{},"f:imagePullPolicy":{},"f:name":{},"f:ports":{".":{},"k:{\"containerPort\":9445,\"protocol\":\"TCP\"}":{".":{},"f:containerPort":{},"f:name":{},"f:protocol":{}}},"f:resources":{".":{},"f:limits":{".":{},"f:cpu":{},"f:memory":{}},"f:requests":{".":{},"f:cpu":{},"f:memory":{}}},"f:securityContext":{".":{},"f:privileged":{}},"f:terminationMessagePath":{},"f:terminationMessagePolicy":{},"f:volumeMounts":{".":{},"k:{\"mountPath\":\"/run\"}":{".":{},"f:mountPath":{},"f:name":{}}}}},"f:dnsPolicy":{},"f:hostPID":{},"f:restartPolicy":{},"f:schedulerName":{},"f:securityContext":{},"f:terminationGracePeriodSeconds":{},"f:volumes":{".":{},"k:{\"name\":\"run\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}}}}},"f:updateStrategy":{"f:rollingUpdate":{".":{},"f:maxUnavailable":{}},"f:type":{}}}}
+          },
+          {
+            "manager": "kube-controller-manager",
+            "operation": "Update",
+            "apiVersion": "apps/v1",
+            "time": "2021-09-24T03:35:58Z",
+            "fieldsType": "FieldsV1",
+            "fieldsV1": {"f:status":{"f:observedGeneration":{}}}
+          }
+        ]
+      },
+      "spec": {
+        "selector": {
+          "matchLabels": {
+            "k8s-app": "ack-prometheus-gpu-exporter"
+          }
+        },
+        "template": {
+          "metadata": {
+            "creationTimestamp": null,
+            "labels": {
+              "k8s-app": "ack-prometheus-gpu-exporter"
+            }
+          },
+          "spec": {
+            "volumes": [
+              {
+                "name": "run",
+                "hostPath": {
+                  "path": "/run",
+                  "type": "DirectoryOrCreate"
+                }
+              }
+            ],
+            "containers": [
+              {
+                "name": "node-gpu-exporter",
+                "image": "registry-vpc.cn-shenzhen.aliyuncs.com/acs/gpu-prometheus-exporter:v1.0.0-e1d6639",
+                "ports": [
+                  {
+                    "name": "http-metrics",
+                    "containerPort": 9445,
+                    "protocol": "TCP"
+                  }
+                ],
+                "env": [
+                  {
+                    "name": "MY_NODE_NAME",
+                    "valueFrom": {
+                      "fieldRef": {
+                        "apiVersion": "v1",
+                        "fieldPath": "spec.nodeName"
+                      }
+                    }
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "300m",
+                    "memory": "100Mi"
+                  },
+                  "requests": {
+                    "cpu": "200m",
+                    "memory": "50Mi"
+                  }
+                },
+                "volumeMounts": [
+                  {
+                    "name": "run",
+                    "mountPath": "/run"
+                  }
+                ],
+                "terminationMessagePath": "/dev/termination-log",
+                "terminationMessagePolicy": "File",
+                "imagePullPolicy": "Always",
+                "securityContext": {
+                  "privileged": true
+                }
+              }
+            ],
+            "restartPolicy": "Always",
+            "terminationGracePeriodSeconds": 30,
+            "dnsPolicy": "ClusterFirst",
+            "hostPID": true,
+            "securityContext": {
+              
+            },
+            "affinity": {
+              "nodeAffinity": {
+                "requiredDuringSchedulingIgnoredDuringExecution": {
+                  "nodeSelectorTerms": [
+                    {
+                      "matchExpressions": [
+                        {
+                          "key": "aliyun.accelerator/nvidia_name",
+                          "operator": "Exists"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "schedulerName": "default-scheduler"
+          }
+        },
+        "updateStrategy": {
+          "type": "RollingUpdate",
+          "rollingUpdate": {
+            "maxUnavailable": 1
+          }
+        },
+        "revisionHistoryLimit": 10
+      },
+      "status": {
+        "currentNumberScheduled": 0,
+        "numberMisscheduled": 0,
+        "desiredNumberScheduled": 0,
+        "numberReady": 0,
+        "observedGeneration": 1
+      }
+    },
+    {
+      "metadata": {
+        "name": "node-exporter",
+        "namespace": "arms-prom",
+        "uid": "8a34b81e-dc5c-49f8-b1b0-50c54b06a575",
+        "resourceVersion": "1627",
+        "generation": 1,
+        "creationTimestamp": "2021-09-24T03:35:58Z",
+        "labels": {
+          "app": "node-exporter"
+        },
+        "annotations": {
+          "deprecated.daemonset.template.generation": "1"
+        },
+        "managedFields": [
+          {
+            "manager": "Go-http-client",
+            "operation": "Update",
+            "apiVersion": "apps/v1",
+            "time": "2021-09-24T03:35:58Z",
+            "fieldsType": "FieldsV1",
+            "fieldsV1": {"f:metadata":{"f:annotations":{".":{},"f:deprecated.daemonset.template.generation":{}},"f:labels":{".":{},"f:app":{}}},"f:spec":{"f:revisionHistoryLimit":{},"f:selector":{},"f:template":{"f:metadata":{"f:labels":{".":{},"f:app":{}}},"f:spec":{"f:affinity":{".":{},"f:nodeAffinity":{".":{},"f:requiredDuringSchedulingIgnoredDuringExecution":{".":{},"f:nodeSelectorTerms":{}}}},"f:containers":{"k:{\"name\":\"kube-rbac-proxy\"}":{".":{},"f:args":{},"f:image":{},"f:imagePullPolicy":{},"f:name":{},"f:ports":{".":{},"k:{\"containerPort\":9100,\"protocol\":\"TCP\"}":{".":{},"f:containerPort":{},"f:hostPort":{},"f:name":{},"f:protocol":{}}},"f:resources":{".":{},"f:limits":{".":{},"f:cpu":{},"f:memory":{}},"f:requests":{".":{},"f:cpu":{},"f:memory":{}}},"f:securityContext":{".":{},"f:allowPrivilegeEscalation":{},"f:capabilities":{".":{},"f:drop":{}},"f:privileged":{},"f:runAsUser":{}},"f:terminationMessagePath":{},"f:terminationMessagePolicy":{}},"k:{\"name\":\"node-exporter\"}":{".":{},"f:args":{},"f:image":{},"f:imagePullPolicy":{},"f:name":{},"f:resources":{".":{},"f:limits":{".":{},"f:cpu":{},"f:memory":{}},"f:requests":{".":{},"f:cpu":{},"f:memory":{}}},"f:securityContext":{".":{},"f:allowPrivilegeEscalation":{},"f:capabilities":{".":{},"f:drop":{}},"f:privileged":{},"f:runAsUser":{}},"f:terminationMessagePath":{},"f:terminationMessagePolicy":{},"f:volumeMounts":{".":{},"k:{\"mountPath\":\"/host/proc\"}":{".":{},"f:mountPath":{},"f:name":{}},"k:{\"mountPath\":\"/host/root\"}":{".":{},"f:mountPath":{},"f:mountPropagation":{},"f:name":{},"f:readOnly":{}},"k:{\"mountPath\":\"/host/sys\"}":{".":{},"f:mountPath":{},"f:name":{}}}}},"f:dnsPolicy":{},"f:hostNetwork":{},"f:hostPID":{},"f:nodeSelector":{".":{},"f:beta.kubernetes.io/os":{}},"f:restartPolicy":{},"f:schedulerName":{},"f:securityContext":{},"f:serviceAccount":{},"f:serviceAccountName":{},"f:terminationGracePeriodSeconds":{},"f:tolerations":{},"f:volumes":{".":{},"k:{\"name\":\"proc\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}},"k:{\"name\":\"root\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}},"k:{\"name\":\"sys\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}}}}},"f:updateStrategy":{"f:rollingUpdate":{".":{},"f:maxUnavailable":{}},"f:type":{}}}}
+          },
+          {
+            "manager": "kube-controller-manager",
+            "operation": "Update",
+            "apiVersion": "apps/v1",
+            "time": "2021-09-24T03:36:17Z",
+            "fieldsType": "FieldsV1",
+            "fieldsV1": {"f:status":{"f:currentNumberScheduled":{},"f:desiredNumberScheduled":{},"f:numberAvailable":{},"f:numberReady":{},"f:observedGeneration":{},"f:updatedNumberScheduled":{}}}
+          }
+        ]
+      },
+      "spec": {
+        "selector": {
+          "matchLabels": {
+            "app": "node-exporter"
+          }
+        },
+        "template": {
+          "metadata": {
+            "creationTimestamp": null,
+            "labels": {
+              "app": "node-exporter"
+            }
+          },
+          "spec": {
+            "volumes": [
+              {
+                "name": "proc",
+                "hostPath": {
+                  "path": "/proc",
+                  "type": ""
+                }
+              },
+              {
+                "name": "sys",
+                "hostPath": {
+                  "path": "/sys",
+                  "type": ""
+                }
+              },
+              {
+                "name": "root",
+                "hostPath": {
+                  "path": "/",
+                  "type": ""
+                }
+              }
+            ],
+            "containers": [
+              {
+                "name": "node-exporter",
+                "image": "registry-vpc.cn-shenzhen.aliyuncs.com/arms-docker-repo/node-exporter:v0.17.0-slim",
+                "args": [
+                  "--web.listen-address=127.0.0.1:9101",
+                  "--path.procfs=/host/proc",
+                  "--path.sysfs=/host/sys",
+                  "--path.rootfs=/host/root",
+                  "--collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var/lib/docker/.+)($|/)",
+                  "--collector.filesystem.ignored-fs-types=^(autofs|binfmt_misc|cgroup|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|mqueue|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|sysfs|tracefs)$"
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "102m",
+                    "memory": "180Mi"
+                  },
+                  "requests": {
+                    "cpu": "102m",
+                    "memory": "180Mi"
+                  }
+                },
+                "volumeMounts": [
+                  {
+                    "name": "proc",
+                    "mountPath": "/host/proc"
+                  },
+                  {
+                    "name": "sys",
+                    "mountPath": "/host/sys"
+                  },
+                  {
+                    "name": "root",
+                    "readOnly": true,
+                    "mountPath": "/host/root",
+                    "mountPropagation": "HostToContainer"
+                  }
+                ],
+                "terminationMessagePath": "/dev/termination-log",
+                "terminationMessagePolicy": "File",
+                "imagePullPolicy": "Always",
+                "securityContext": {
+                  "capabilities": {
+                    "drop": [
+                      "ALL"
+                    ]
+                  },
+                  "privileged": false,
+                  "runAsUser": 0,
+                  "allowPrivilegeEscalation": false
+                }
+              },
+              {
+                "name": "kube-rbac-proxy",
+                "image": "registry-vpc.cn-shenzhen.aliyuncs.com/acs/kube-rbac-proxy:v0.4.1-bbc79f2e-aliyun",
+                "args": [
+                  "--secure-listen-address=:9100",
+                  "--upstream=http://127.0.0.1:9101/"
+                ],
+                "ports": [
+                  {
+                    "name": "https",
+                    "hostPort": 9100,
+                    "containerPort": 9100,
+                    "protocol": "TCP"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "20m",
+                    "memory": "40Mi"
+                  },
+                  "requests": {
+                    "cpu": "10m",
+                    "memory": "20Mi"
+                  }
+                },
+                "terminationMessagePath": "/dev/termination-log",
+                "terminationMessagePolicy": "File",
+                "imagePullPolicy": "Always",
+                "securityContext": {
+                  "capabilities": {
+                    "drop": [
+                      "ALL"
+                    ]
+                  },
+                  "privileged": false,
+                  "runAsUser": 65534,
+                  "allowPrivilegeEscalation": false
+                }
+              }
+            ],
+            "restartPolicy": "Always",
+            "terminationGracePeriodSeconds": 30,
+            "dnsPolicy": "ClusterFirst",
+            "nodeSelector": {
+              "beta.kubernetes.io/os": "linux"
+            },
+            "serviceAccountName": "arms-prom-operator",
+            "serviceAccount": "arms-prom-operator",
+            "hostNetwork": true,
+            "hostPID": true,
+            "securityContext": {
+              
+            },
+            "affinity": {
+              "nodeAffinity": {
+                "requiredDuringSchedulingIgnoredDuringExecution": {
+                  "nodeSelectorTerms": [
+                    {
+                      "matchExpressions": [
+                        {
+                          "key": "type",
+                          "operator": "NotIn",
+                          "values": [
+                            "virtual-kubelet"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "schedulerName": "default-scheduler",
+            "tolerations": [
+              {
+                "operator": "Exists"
+              }
+            ]
+          }
+        },
+        "updateStrategy": {
+          "type": "RollingUpdate",
+          "rollingUpdate": {
+            "maxUnavailable": 1
+          }
+        },
+        "revisionHistoryLimit": 10
+      },
+      "status": {
+        "currentNumberScheduled": 3,
+        "numberMisscheduled": 0,
+        "desiredNumberScheduled": 3,
+        "numberReady": 3,
+        "observedGeneration": 1,
+        "updatedNumberScheduled": 3,
+        "numberAvailable": 3
+      }
+    },
+    {
+      "metadata": {
+        "name": "ack-node-problem-detector-daemonset",
+        "namespace": "kube-system",
+        "uid": "3bec3439-19d1-43a7-be2f-ac45f8f857f2",
+        "resourceVersion": "1707",
+        "generation": 1,
+        "creationTimestamp": "2021-09-24T03:35:55Z",
+        "labels": {
+          "app": "ack-node-problem-detector"
+        },
+        "annotations": {
+          "deprecated.daemonset.template.generation": "1"
+        },
+        "managedFields": [
+          {
+            "manager": "Go-http-client",
+            "operation": "Update",
+            "apiVersion": "apps/v1",
+            "time": "2021-09-24T03:35:55Z",
+            "fieldsType": "FieldsV1",
+            "fieldsV1": {"f:metadata":{"f:annotations":{".":{},"f:deprecated.daemonset.template.generation":{}},"f:labels":{".":{},"f:app":{}}},"f:spec":{"f:revisionHistoryLimit":{},"f:selector":{},"f:template":{"f:metadata":{"f:labels":{".":{},"f:app":{}}},"f:spec":{"f:affinity":{".":{},"f:nodeAffinity":{".":{},"f:requiredDuringSchedulingIgnoredDuringExecution":{".":{},"f:nodeSelectorTerms":{}}}},"f:containers":{"k:{\"name\":\"ack-node-problem-detector\"}":{".":{},"f:command":{},"f:env":{".":{},"k:{\"name\":\"NODE_NAME\"}":{".":{},"f:name":{},"f:valueFrom":{".":{},"f:fieldRef":{".":{},"f:apiVersion":{},"f:fieldPath":{}}}}},"f:image":{},"f:imagePullPolicy":{},"f:name":{},"f:resources":{".":{},"f:limits":{".":{},"f:cpu":{},"f:memory":{}},"f:requests":{".":{},"f:cpu":{},"f:memory":{}}},"f:securityContext":{".":{},"f:privileged":{}},"f:terminationMessagePath":{},"f:terminationMessagePolicy":{},"f:volumeMounts":{".":{},"k:{\"mountPath\":\"/bin/systemctl\"}":{".":{},"f:mountPath":{},"f:name":{}},"k:{\"mountPath\":\"/config\"}":{".":{},"f:mountPath":{},"f:name":{},"f:readOnly":{}},"k:{\"mountPath\":\"/dev/kmsg\"}":{".":{},"f:mountPath":{},"f:name":{},"f:readOnly":{}},"k:{\"mountPath\":\"/etc/localtime\"}":{".":{},"f:mountPath":{},"f:name":{},"f:readOnly":{}},"k:{\"mountPath\":\"/etc/systemd/system\"}":{".":{},"f:mountPath":{},"f:name":{},"f:readOnly":{}},"k:{\"mountPath\":\"/host/proc\"}":{".":{},"f:mountPath":{},"f:name":{},"f:readOnly":{}},"k:{\"mountPath\":\"/run/systemd\"}":{".":{},"f:mountPath":{},"f:name":{},"f:readOnly":{}},"k:{\"mountPath\":\"/sys/fs/cgroup\"}":{".":{},"f:mountPath":{},"f:name":{},"f:readOnly":{}},"k:{\"mountPath\":\"/var/hostrun\"}":{".":{},"f:mountPath":{},"f:name":{},"f:readOnly":{}},"k:{\"mountPath\":\"/var/log\"}":{".":{},"f:mountPath":{},"f:name":{},"f:readOnly":{}},"k:{\"mountPath\":\"/var/run/dbus\"}":{".":{},"f:mountPath":{},"f:name":{},"f:readOnly":{}}}}},"f:dnsPolicy":{},"f:hostNetwork":{},"f:restartPolicy":{},"f:schedulerName":{},"f:securityContext":{},"f:serviceAccount":{},"f:serviceAccountName":{},"f:terminationGracePeriodSeconds":{},"f:volumes":{".":{},"k:{\"name\":\"cgroup\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}},"k:{\"name\":\"config\"}":{".":{},"f:configMap":{".":{},"f:defaultMode":{},"f:items":{},"f:name":{}},"f:name":{}},"k:{\"name\":\"dbus\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}},"k:{\"name\":\"dockersock\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}},"k:{\"name\":\"kmsg\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}},"k:{\"name\":\"localtime\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}},"k:{\"name\":\"log\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}},"k:{\"name\":\"proc\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}},"k:{\"name\":\"system\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}},"k:{\"name\":\"systemctl\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}},"k:{\"name\":\"systemd\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}}}}},"f:updateStrategy":{"f:rollingUpdate":{".":{},"f:maxUnavailable":{}},"f:type":{}}}}
+          },
+          {
+            "manager": "kube-controller-manager",
+            "operation": "Update",
+            "apiVersion": "apps/v1",
+            "time": "2021-09-24T03:36:31Z",
+            "fieldsType": "FieldsV1",
+            "fieldsV1": {"f:status":{"f:currentNumberScheduled":{},"f:desiredNumberScheduled":{},"f:numberAvailable":{},"f:numberReady":{},"f:observedGeneration":{},"f:updatedNumberScheduled":{}}}
+          }
+        ]
+      },
+      "spec": {
+        "selector": {
+          "matchLabels": {
+            "app": "ack-node-problem-detector"
+          }
+        },
+        "template": {
+          "metadata": {
+            "creationTimestamp": null,
+            "labels": {
+              "app": "ack-node-problem-detector"
+            }
+          },
+          "spec": {
+            "volumes": [
+              {
+                "name": "log",
+                "hostPath": {
+                  "path": "/var/log/",
+                  "type": ""
+                }
+              },
+              {
+                "name": "kmsg",
+                "hostPath": {
+                  "path": "/dev/kmsg",
+                  "type": ""
+                }
+              },
+              {
+                "name": "localtime",
+                "hostPath": {
+                  "path": "/etc/localtime",
+                  "type": ""
+                }
+              },
+              {
+                "name": "proc",
+                "hostPath": {
+                  "path": "/proc",
+                  "type": ""
+                }
+              },
+              {
+                "name": "dbus",
+                "hostPath": {
+                  "path": "/var/run/dbus",
+                  "type": ""
+                }
+              },
+              {
+                "name": "systemd",
+                "hostPath": {
+                  "path": "/run/systemd",
+                  "type": ""
+                }
+              },
+              {
+                "name": "systemctl",
+                "hostPath": {
+                  "path": "/bin/systemctl",
+                  "type": ""
+                }
+              },
+              {
+                "name": "system",
+                "hostPath": {
+                  "path": "/etc/systemd/system",
+                  "type": ""
+                }
+              },
+              {
+                "name": "cgroup",
+                "hostPath": {
+                  "path": "/sys/fs/cgroup",
+                  "type": ""
+                }
+              },
+              {
+                "name": "dockersock",
+                "hostPath": {
+                  "path": "/var/run",
+                  "type": "DirectoryOrCreate"
+                }
+              },
+              {
+                "name": "config",
+                "configMap": {
+                  "name": "ack-node-problem-detector-config",
+                  "items": [
+                    {
+                      "key": "kernel-monitor.json",
+                      "path": "kernel-monitor.json"
+                    },
+                    {
+                      "key": "docker-monitor.json",
+                      "path": "docker-monitor.json"
+                    },
+                    {
+                      "key": "ntp-problem-monitor.json",
+                      "path": "ntp-problem-monitor.json"
+                    },
+                    {
+                      "key": "check_ntp.sh",
+                      "path": "plugin/check_ntp.sh"
+                    },
+                    {
+                      "key": "network-problem-monitor.json",
+                      "path": "network-problem-monitor.json"
+                    },
+                    {
+                      "key": "network_problem.sh",
+                      "path": "plugin/network_problem.sh"
+                    },
+                    {
+                      "key": "inodes-problem-monitor.json",
+                      "path": "inodes-problem-monitor.json"
+                    },
+                    {
+                      "key": "check_inodes.sh",
+                      "path": "plugin/check_inodes.sh"
+                    },
+                    {
+                      "key": "pid-pressure-problem-monitor.json",
+                      "path": "pid-pressure-problem-monitor.json"
+                    },
+                    {
+                      "key": "check_pid_pressure.sh",
+                      "path": "plugin/check_pid_pressure.sh"
+                    },
+                    {
+                      "key": "docker-offline-monitor.json",
+                      "path": "docker-offline-monitor.json"
+                    },
+                    {
+                      "key": "check_docker_offline.sh",
+                      "path": "plugin/check_docker_offline.sh"
+                    },
+                    {
+                      "key": "instance_expired_checker.json",
+                      "path": "instance_expired_checker.json"
+                    },
+                    {
+                      "key": "instance_expired_checker.sh",
+                      "path": "plugin/instance_expired_checker.sh"
+                    }
+                  ],
+                  "defaultMode": 493
+                }
+              }
+            ],
+            "containers": [
+              {
+                "name": "ack-node-problem-detector",
+                "image": "registry-vpc.cn-shenzhen.aliyuncs.com/acs/node-problem-detector:v0.6.3-29-71bd5f8",
+                "command": [
+                  "/node-problem-detector",
+                  "--logtostderr",
+                  "--system-log-monitors=/config/kernel-monitor.json,/config/docker-monitor.json",
+                  "--custom-plugin-monitors=/config/ntp-problem-monitor.json",
+                  "--custom-plugin-monitors=/config/network-problem-monitor.json",
+                  "--custom-plugin-monitors=/config/inodes-problem-monitor.json",
+                  "--custom-plugin-monitors=/config/pid-pressure-problem-monitor.json",
+                  "--custom-plugin-monitors=/config/docker-offline-monitor.json",
+                  "--custom-plugin-monitors=/config/instance_expired_checker.json"
+                ],
+                "env": [
+                  {
+                    "name": "NODE_NAME",
+                    "valueFrom": {
+                      "fieldRef": {
+                        "apiVersion": "v1",
+                        "fieldPath": "spec.nodeName"
+                      }
+                    }
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "100m",
+                    "memory": "200Mi"
+                  },
+                  "requests": {
+                    "cpu": "100m",
+                    "memory": "200Mi"
+                  }
+                },
+                "volumeMounts": [
+                  {
+                    "name": "log",
+                    "readOnly": true,
+                    "mountPath": "/var/log"
+                  },
+                  {
+                    "name": "kmsg",
+                    "readOnly": true,
+                    "mountPath": "/dev/kmsg"
+                  },
+                  {
+                    "name": "localtime",
+                    "readOnly": true,
+                    "mountPath": "/etc/localtime"
+                  },
+                  {
+                    "name": "config",
+                    "readOnly": true,
+                    "mountPath": "/config"
+                  },
+                  {
+                    "name": "proc",
+                    "readOnly": true,
+                    "mountPath": "/host/proc"
+                  },
+                  {
+                    "name": "dbus",
+                    "readOnly": true,
+                    "mountPath": "/var/run/dbus"
+                  },
+                  {
+                    "name": "systemd",
+                    "readOnly": true,
+                    "mountPath": "/run/systemd"
+                  },
+                  {
+                    "name": "systemctl",
+                    "mountPath": "/bin/systemctl"
+                  },
+                  {
+                    "name": "system",
+                    "readOnly": true,
+                    "mountPath": "/etc/systemd/system"
+                  },
+                  {
+                    "name": "cgroup",
+                    "readOnly": true,
+                    "mountPath": "/sys/fs/cgroup"
+                  },
+                  {
+                    "name": "dockersock",
+                    "readOnly": true,
+                    "mountPath": "/var/hostrun"
+                  }
+                ],
+                "terminationMessagePath": "/dev/termination-log",
+                "terminationMessagePolicy": "File",
+                "imagePullPolicy": "Always",
+                "securityContext": {
+                  "privileged": true
+                }
+              }
+            ],
+            "restartPolicy": "Always",
+            "terminationGracePeriodSeconds": 30,
+            "dnsPolicy": "ClusterFirst",
+            "serviceAccountName": "ack-node-problem-detector",
+            "serviceAccount": "ack-node-problem-detector",
+            "hostNetwork": true,
+            "securityContext": {
+              
+            },
+            "affinity": {
+              "nodeAffinity": {
+                "requiredDuringSchedulingIgnoredDuringExecution": {
+                  "nodeSelectorTerms": [
+                    {
+                      "matchExpressions": [
+                        {
+                          "key": "type",
+                          "operator": "NotIn",
+                          "values": [
+                            "virtual-kubelet"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "schedulerName": "default-scheduler"
+          }
+        },
+        "updateStrategy": {
+          "type": "RollingUpdate",
+          "rollingUpdate": {
+            "maxUnavailable": 1
+          }
+        },
+        "revisionHistoryLimit": 10
+      },
+      "status": {
+        "currentNumberScheduled": 3,
+        "numberMisscheduled": 0,
+        "desiredNumberScheduled": 3,
+        "numberReady": 3,
+        "observedGeneration": 1,
+        "updatedNumberScheduled": 3,
+        "numberAvailable": 3
+      }
+    },
+    {
+      "metadata": {
+        "name": "csi-plugin",
+        "namespace": "kube-system",
+        "uid": "841ac314-1049-4bc3-bd86-d2aeaba92115",
+        "resourceVersion": "1866",
+        "generation": 1,
+        "creationTimestamp": "2021-09-24T03:35:52Z",
+        "annotations": {
+          "deprecated.daemonset.template.generation": "1",
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"DaemonSet\",\"metadata\":{\"annotations\":{},\"name\":\"csi-plugin\",\"namespace\":\"kube-system\"},\"spec\":{\"selector\":{\"matchLabels\":{\"app\":\"csi-plugin\"}},\"template\":{\"metadata\":{\"labels\":{\"app\":\"csi-plugin\"}},\"spec\":{\"affinity\":{\"nodeAffinity\":{\"requiredDuringSchedulingIgnoredDuringExecution\":{\"nodeSelectorTerms\":[{\"matchExpressions\":[{\"key\":\"type\",\"operator\":\"NotIn\",\"values\":[\"virtual-kubelet\"]}]}]}}},\"containers\":[{\"args\":[\"--v=5\",\"--csi-address=/var/lib/kubelet/csi-plugins/diskplugin.csi.alibabacloud.com/csi.sock\",\"--kubelet-registration-path=/var/lib/kubelet/csi-plugins/diskplugin.csi.alibabacloud.com/csi.sock\"],\"image\":\"registry-vpc.cn-shenzhen.aliyuncs.com/acs/csi-node-driver-registrar:v1.3.0-6e9fff3-aliyun\",\"imagePullPolicy\":\"Always\",\"name\":\"disk-driver-registrar\",\"resources\":{\"limits\":{\"cpu\":\"500m\",\"memory\":\"1024Mi\"},\"requests\":{\"cpu\":\"10m\",\"memory\":\"16Mi\"}},\"volumeMounts\":[{\"mountPath\":\"/var/lib/kubelet\",\"name\":\"kubelet-dir\"},{\"mountPath\":\"/registration\",\"name\":\"registration-dir\"}]},{\"args\":[\"--v=5\",\"--csi-address=/var/lib/kubelet/csi-plugins/nasplugin.csi.alibabacloud.com/csi.sock\",\"--kubelet-registration-path=/var/lib/kubelet/csi-plugins/nasplugin.csi.alibabacloud.com/csi.sock\"],\"image\":\"registry-vpc.cn-shenzhen.aliyuncs.com/acs/csi-node-driver-registrar:v1.3.0-6e9fff3-aliyun\",\"imagePullPolicy\":\"Always\",\"name\":\"nas-driver-registrar\",\"resources\":{\"limits\":{\"cpu\":\"500m\",\"memory\":\"1024Mi\"},\"requests\":{\"cpu\":\"10m\",\"memory\":\"16Mi\"}},\"volumeMounts\":[{\"mountPath\":\"/var/lib/kubelet/\",\"name\":\"kubelet-dir\"},{\"mountPath\":\"/registration\",\"name\":\"registration-dir\"}]},{\"args\":[\"--v=5\",\"--csi-address=/var/lib/kubelet/csi-plugins/ossplugin.csi.alibabacloud.com/csi.sock\",\"--kubelet-registration-path=/var/lib/kubelet/csi-plugins/ossplugin.csi.alibabacloud.com/csi.sock\"],\"image\":\"registry-vpc.cn-shenzhen.aliyuncs.com/acs/csi-node-driver-registrar:v1.3.0-6e9fff3-aliyun\",\"imagePullPolicy\":\"Always\",\"name\":\"oss-driver-registrar\",\"resources\":{\"limits\":{\"cpu\":\"500m\",\"memory\":\"1024Mi\"},\"requests\":{\"cpu\":\"10m\",\"memory\":\"16Mi\"}},\"volumeMounts\":[{\"mountPath\":\"/var/lib/kubelet/\",\"name\":\"kubelet-dir\"},{\"mountPath\":\"/registration\",\"name\":\"registration-dir\"}]},{\"args\":[\"--endpoint=$(CSI_ENDPOINT)\",\"--v=2\",\"--driver=oss,nas,disk\"],\"env\":[{\"name\":\"KUBE_NODE_NAME\",\"valueFrom\":{\"fieldRef\":{\"apiVersion\":\"v1\",\"fieldPath\":\"spec.nodeName\"}}},{\"name\":\"CSI_ENDPOINT\",\"value\":\"unix://var/lib/kubelet/csi-plugins/driverplugin.csi.alibabacloud.com-replace/csi.sock\"},{\"name\":\"MAX_VOLUMES_PERNODE\",\"value\":\"15\"},{\"name\":\"SERVICE_TYPE\",\"value\":\"plugin\"}],\"image\":\"registry-vpc.cn-shenzhen.aliyuncs.com/acs/csi-plugin:v1.20.5-ff6490f-aliyun\",\"imagePullPolicy\":\"Always\",\"livenessProbe\":{\"failureThreshold\":5,\"httpGet\":{\"path\":\"/healthz\",\"port\":\"healthz\",\"scheme\":\"HTTP\"},\"initialDelaySeconds\":10,\"periodSeconds\":30,\"timeoutSeconds\":5},\"name\":\"csi-plugin\",\"ports\":[{\"containerPort\":11260,\"name\":\"healthz\"}],\"readinessProbe\":{\"failureThreshold\":5,\"httpGet\":{\"path\":\"/healthz\",\"port\":\"healthz\"},\"initialDelaySeconds\":10,\"periodSeconds\":30,\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"500m\",\"memory\":\"1024Mi\"},\"requests\":{\"cpu\":\"100m\",\"memory\":\"128Mi\"}},\"securityContext\":{\"allowPrivilegeEscalation\":true,\"privileged\":true},\"volumeMounts\":[{\"mountPath\":\"/var/lib/kubelet/\",\"mountPropagation\":\"Bidirectional\",\"name\":\"kubelet-dir\"},{\"mountPath\":\"/host/etc\",\"name\":\"etc\"},{\"mountPath\":\"/var/log/\",\"name\":\"host-log\"},{\"mountPath\":\"/host/usr/\",\"name\":\"ossconnectordir\"},{\"mountPath\":\"/var/lib/container\",\"mountPropagation\":\"Bidirectional\",\"name\":\"container-dir\"},{\"mountPath\":\"/dev\",\"mountPropagation\":\"HostToContainer\",\"name\":\"host-dev\"},{\"mountPath\":\"/var/addon\",\"name\":\"addon-token\",\"readOnly\":true}]}],\"dnsPolicy\":\"ClusterFirstWithHostNet\",\"hostNetwork\":true,\"hostPID\":true,\"nodeSelector\":{\"beta.kubernetes.io/os\":\"linux\"},\"priorityClassName\":\"system-node-critical\",\"serviceAccount\":\"csi-admin\",\"tolerations\":[{\"operator\":\"Exists\"}],\"volumes\":[{\"hostPath\":{\"path\":\"/var/lib/kubelet/plugins_registry\",\"type\":\"DirectoryOrCreate\"},\"name\":\"registration-dir\"},{\"hostPath\":{\"path\":\"/var/lib/container\",\"type\":\"DirectoryOrCreate\"},\"name\":\"container-dir\"},{\"hostPath\":{\"path\":\"/var/lib/kubelet\",\"type\":\"Directory\"},\"name\":\"kubelet-dir\"},{\"hostPath\":{\"path\":\"/dev\"},\"name\":\"host-dev\"},{\"hostPath\":{\"path\":\"/var/log/\"},\"name\":\"host-log\"},{\"hostPath\":{\"path\":\"/etc\"},\"name\":\"etc\"},{\"hostPath\":{\"path\":\"/usr/\"},\"name\":\"ossconnectordir\"},{\"name\":\"addon-token\",\"secret\":{\"defaultMode\":420,\"items\":[{\"key\":\"addon.token.config\",\"path\":\"token-config\"}],\"optional\":true,\"secretName\":\"addon.csi.token\"}}]}},\"updateStrategy\":{\"rollingUpdate\":{\"maxUnavailable\":\"10%\"},\"type\":\"RollingUpdate\"}}}\n"
+        },
+        "managedFields": [
+          {
+            "manager": "rc",
+            "operation": "Update",
+            "apiVersion": "apps/v1",
+            "time": "2021-09-24T03:35:52Z",
+            "fieldsType": "FieldsV1",
+            "fieldsV1": {"f:metadata":{"f:annotations":{".":{},"f:deprecated.daemonset.template.generation":{},"f:kubectl.kubernetes.io/last-applied-configuration":{}}},"f:spec":{"f:revisionHistoryLimit":{},"f:selector":{},"f:template":{"f:metadata":{"f:labels":{".":{},"f:app":{}}},"f:spec":{"f:affinity":{".":{},"f:nodeAffinity":{".":{},"f:requiredDuringSchedulingIgnoredDuringExecution":{".":{},"f:nodeSelectorTerms":{}}}},"f:containers":{"k:{\"name\":\"csi-plugin\"}":{".":{},"f:args":{},"f:env":{".":{},"k:{\"name\":\"CSI_ENDPOINT\"}":{".":{},"f:name":{},"f:value":{}},"k:{\"name\":\"KUBE_NODE_NAME\"}":{".":{},"f:name":{},"f:valueFrom":{".":{},"f:fieldRef":{".":{},"f:apiVersion":{},"f:fieldPath":{}}}},"k:{\"name\":\"MAX_VOLUMES_PERNODE\"}":{".":{},"f:name":{},"f:value":{}},"k:{\"name\":\"SERVICE_TYPE\"}":{".":{},"f:name":{},"f:value":{}}},"f:image":{},"f:imagePullPolicy":{},"f:livenessProbe":{".":{},"f:failureThreshold":{},"f:httpGet":{".":{},"f:path":{},"f:port":{},"f:scheme":{}},"f:initialDelaySeconds":{},"f:periodSeconds":{},"f:successThreshold":{},"f:timeoutSeconds":{}},"f:name":{},"f:ports":{".":{},"k:{\"containerPort\":11260,\"protocol\":\"TCP\"}":{".":{},"f:containerPort":{},"f:hostPort":{},"f:name":{},"f:protocol":{}}},"f:readinessProbe":{".":{},"f:failureThreshold":{},"f:httpGet":{".":{},"f:path":{},"f:port":{},"f:scheme":{}},"f:initialDelaySeconds":{},"f:periodSeconds":{},"f:successThreshold":{},"f:timeoutSeconds":{}},"f:resources":{".":{},"f:limits":{".":{},"f:cpu":{},"f:memory":{}},"f:requests":{".":{},"f:cpu":{},"f:memory":{}}},"f:securityContext":{".":{},"f:allowPrivilegeEscalation":{},"f:privileged":{}},"f:terminationMessagePath":{},"f:terminationMessagePolicy":{},"f:volumeMounts":{".":{},"k:{\"mountPath\":\"/dev\"}":{".":{},"f:mountPath":{},"f:mountPropagation":{},"f:name":{}},"k:{\"mountPath\":\"/host/etc\"}":{".":{},"f:mountPath":{},"f:name":{}},"k:{\"mountPath\":\"/host/usr/\"}":{".":{},"f:mountPath":{},"f:name":{}},"k:{\"mountPath\":\"/var/addon\"}":{".":{},"f:mountPath":{},"f:name":{},"f:readOnly":{}},"k:{\"mountPath\":\"/var/lib/container\"}":{".":{},"f:mountPath":{},"f:mountPropagation":{},"f:name":{}},"k:{\"mountPath\":\"/var/lib/kubelet/\"}":{".":{},"f:mountPath":{},"f:mountPropagation":{},"f:name":{}},"k:{\"mountPath\":\"/var/log/\"}":{".":{},"f:mountPath":{},"f:name":{}}}},"k:{\"name\":\"disk-driver-registrar\"}":{".":{},"f:args":{},"f:image":{},"f:imagePullPolicy":{},"f:name":{},"f:resources":{".":{},"f:limits":{".":{},"f:cpu":{},"f:memory":{}},"f:requests":{".":{},"f:cpu":{},"f:memory":{}}},"f:terminationMessagePath":{},"f:terminationMessagePolicy":{},"f:volumeMounts":{".":{},"k:{\"mountPath\":\"/registration\"}":{".":{},"f:mountPath":{},"f:name":{}},"k:{\"mountPath\":\"/var/lib/kubelet\"}":{".":{},"f:mountPath":{},"f:name":{}}}},"k:{\"name\":\"nas-driver-registrar\"}":{".":{},"f:args":{},"f:image":{},"f:imagePullPolicy":{},"f:name":{},"f:resources":{".":{},"f:limits":{".":{},"f:cpu":{},"f:memory":{}},"f:requests":{".":{},"f:cpu":{},"f:memory":{}}},"f:terminationMessagePath":{},"f:terminationMessagePolicy":{},"f:volumeMounts":{".":{},"k:{\"mountPath\":\"/registration\"}":{".":{},"f:mountPath":{},"f:name":{}},"k:{\"mountPath\":\"/var/lib/kubelet/\"}":{".":{},"f:mountPath":{},"f:name":{}}}},"k:{\"name\":\"oss-driver-registrar\"}":{".":{},"f:args":{},"f:image":{},"f:imagePullPolicy":{},"f:name":{},"f:resources":{".":{},"f:limits":{".":{},"f:cpu":{},"f:memory":{}},"f:requests":{".":{},"f:cpu":{},"f:memory":{}}},"f:terminationMessagePath":{},"f:terminationMessagePolicy":{},"f:volumeMounts":{".":{},"k:{\"mountPath\":\"/registration\"}":{".":{},"f:mountPath":{},"f:name":{}},"k:{\"mountPath\":\"/var/lib/kubelet/\"}":{".":{},"f:mountPath":{},"f:name":{}}}}},"f:dnsPolicy":{},"f:hostNetwork":{},"f:hostPID":{},"f:nodeSelector":{".":{},"f:beta.kubernetes.io/os":{}},"f:priorityClassName":{},"f:restartPolicy":{},"f:schedulerName":{},"f:securityContext":{},"f:serviceAccount":{},"f:serviceAccountName":{},"f:terminationGracePeriodSeconds":{},"f:tolerations":{},"f:volumes":{".":{},"k:{\"name\":\"addon-token\"}":{".":{},"f:name":{},"f:secret":{".":{},"f:defaultMode":{},"f:items":{},"f:optional":{},"f:secretName":{}}},"k:{\"name\":\"container-dir\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}},"k:{\"name\":\"etc\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}},"k:{\"name\":\"host-dev\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}},"k:{\"name\":\"host-log\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}},"k:{\"name\":\"kubelet-dir\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}},"k:{\"name\":\"ossconnectordir\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}},"k:{\"name\":\"registration-dir\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}}}}},"f:updateStrategy":{"f:rollingUpdate":{".":{},"f:maxUnavailable":{}},"f:type":{}}}}
+          },
+          {
+            "manager": "kube-controller-manager",
+            "operation": "Update",
+            "apiVersion": "apps/v1",
+            "time": "2021-09-24T03:36:48Z",
+            "fieldsType": "FieldsV1",
+            "fieldsV1": {"f:status":{"f:currentNumberScheduled":{},"f:desiredNumberScheduled":{},"f:numberAvailable":{},"f:numberReady":{},"f:observedGeneration":{},"f:updatedNumberScheduled":{}}}
+          }
+        ]
+      },
+      "spec": {
+        "selector": {
+          "matchLabels": {
+            "app": "csi-plugin"
+          }
+        },
+        "template": {
+          "metadata": {
+            "creationTimestamp": null,
+            "labels": {
+              "app": "csi-plugin"
+            }
+          },
+          "spec": {
+            "volumes": [
+              {
+                "name": "registration-dir",
+                "hostPath": {
+                  "path": "/var/lib/kubelet/plugins_registry",
+                  "type": "DirectoryOrCreate"
+                }
+              },
+              {
+                "name": "container-dir",
+                "hostPath": {
+                  "path": "/var/lib/container",
+                  "type": "DirectoryOrCreate"
+                }
+              },
+              {
+                "name": "kubelet-dir",
+                "hostPath": {
+                  "path": "/var/lib/kubelet",
+                  "type": "Directory"
+                }
+              },
+              {
+                "name": "host-dev",
+                "hostPath": {
+                  "path": "/dev",
+                  "type": ""
+                }
+              },
+              {
+                "name": "host-log",
+                "hostPath": {
+                  "path": "/var/log/",
+                  "type": ""
+                }
+              },
+              {
+                "name": "etc",
+                "hostPath": {
+                  "path": "/etc",
+                  "type": ""
+                }
+              },
+              {
+                "name": "ossconnectordir",
+                "hostPath": {
+                  "path": "/usr/",
+                  "type": ""
+                }
+              },
+              {
+                "name": "addon-token",
+                "secret": {
+                  "secretName": "addon.csi.token",
+                  "items": [
+                    {
+                      "key": "addon.token.config",
+                      "path": "token-config"
+                    }
+                  ],
+                  "defaultMode": 420,
+                  "optional": true
+                }
+              }
+            ],
+            "containers": [
+              {
+                "name": "disk-driver-registrar",
+                "image": "registry-vpc.cn-shenzhen.aliyuncs.com/acs/csi-node-driver-registrar:v1.3.0-6e9fff3-aliyun",
+                "args": [
+                  "--v=5",
+                  "--csi-address=/var/lib/kubelet/csi-plugins/diskplugin.csi.alibabacloud.com/csi.sock",
+                  "--kubelet-registration-path=/var/lib/kubelet/csi-plugins/diskplugin.csi.alibabacloud.com/csi.sock"
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "500m",
+                    "memory": "1Gi"
+                  },
+                  "requests": {
+                    "cpu": "10m",
+                    "memory": "16Mi"
+                  }
+                },
+                "volumeMounts": [
+                  {
+                    "name": "kubelet-dir",
+                    "mountPath": "/var/lib/kubelet"
+                  },
+                  {
+                    "name": "registration-dir",
+                    "mountPath": "/registration"
+                  }
+                ],
+                "terminationMessagePath": "/dev/termination-log",
+                "terminationMessagePolicy": "File",
+                "imagePullPolicy": "Always"
+              },
+              {
+                "name": "nas-driver-registrar",
+                "image": "registry-vpc.cn-shenzhen.aliyuncs.com/acs/csi-node-driver-registrar:v1.3.0-6e9fff3-aliyun",
+                "args": [
+                  "--v=5",
+                  "--csi-address=/var/lib/kubelet/csi-plugins/nasplugin.csi.alibabacloud.com/csi.sock",
+                  "--kubelet-registration-path=/var/lib/kubelet/csi-plugins/nasplugin.csi.alibabacloud.com/csi.sock"
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "500m",
+                    "memory": "1Gi"
+                  },
+                  "requests": {
+                    "cpu": "10m",
+                    "memory": "16Mi"
+                  }
+                },
+                "volumeMounts": [
+                  {
+                    "name": "kubelet-dir",
+                    "mountPath": "/var/lib/kubelet/"
+                  },
+                  {
+                    "name": "registration-dir",
+                    "mountPath": "/registration"
+                  }
+                ],
+                "terminationMessagePath": "/dev/termination-log",
+                "terminationMessagePolicy": "File",
+                "imagePullPolicy": "Always"
+              },
+              {
+                "name": "oss-driver-registrar",
+                "image": "registry-vpc.cn-shenzhen.aliyuncs.com/acs/csi-node-driver-registrar:v1.3.0-6e9fff3-aliyun",
+                "args": [
+                  "--v=5",
+                  "--csi-address=/var/lib/kubelet/csi-plugins/ossplugin.csi.alibabacloud.com/csi.sock",
+                  "--kubelet-registration-path=/var/lib/kubelet/csi-plugins/ossplugin.csi.alibabacloud.com/csi.sock"
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "500m",
+                    "memory": "1Gi"
+                  },
+                  "requests": {
+                    "cpu": "10m",
+                    "memory": "16Mi"
+                  }
+                },
+                "volumeMounts": [
+                  {
+                    "name": "kubelet-dir",
+                    "mountPath": "/var/lib/kubelet/"
+                  },
+                  {
+                    "name": "registration-dir",
+                    "mountPath": "/registration"
+                  }
+                ],
+                "terminationMessagePath": "/dev/termination-log",
+                "terminationMessagePolicy": "File",
+                "imagePullPolicy": "Always"
+              },
+              {
+                "name": "csi-plugin",
+                "image": "registry-vpc.cn-shenzhen.aliyuncs.com/acs/csi-plugin:v1.20.5-ff6490f-aliyun",
+                "args": [
+                  "--endpoint=$(CSI_ENDPOINT)",
+                  "--v=2",
+                  "--driver=oss,nas,disk"
+                ],
+                "ports": [
+                  {
+                    "name": "healthz",
+                    "hostPort": 11260,
+                    "containerPort": 11260,
+                    "protocol": "TCP"
+                  }
+                ],
+                "env": [
+                  {
+                    "name": "KUBE_NODE_NAME",
+                    "valueFrom": {
+                      "fieldRef": {
+                        "apiVersion": "v1",
+                        "fieldPath": "spec.nodeName"
+                      }
+                    }
+                  },
+                  {
+                    "name": "CSI_ENDPOINT",
+                    "value": "unix://var/lib/kubelet/csi-plugins/driverplugin.csi.alibabacloud.com-replace/csi.sock"
+                  },
+                  {
+                    "name": "MAX_VOLUMES_PERNODE",
+                    "value": "15"
+                  },
+                  {
+                    "name": "SERVICE_TYPE",
+                    "value": "plugin"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "500m",
+                    "memory": "1Gi"
+                  },
+                  "requests": {
+                    "cpu": "100m",
+                    "memory": "128Mi"
+                  }
+                },
+                "volumeMounts": [
+                  {
+                    "name": "kubelet-dir",
+                    "mountPath": "/var/lib/kubelet/",
+                    "mountPropagation": "Bidirectional"
+                  },
+                  {
+                    "name": "etc",
+                    "mountPath": "/host/etc"
+                  },
+                  {
+                    "name": "host-log",
+                    "mountPath": "/var/log/"
+                  },
+                  {
+                    "name": "ossconnectordir",
+                    "mountPath": "/host/usr/"
+                  },
+                  {
+                    "name": "container-dir",
+                    "mountPath": "/var/lib/container",
+                    "mountPropagation": "Bidirectional"
+                  },
+                  {
+                    "name": "host-dev",
+                    "mountPath": "/dev",
+                    "mountPropagation": "HostToContainer"
+                  },
+                  {
+                    "name": "addon-token",
+                    "readOnly": true,
+                    "mountPath": "/var/addon"
+                  }
+                ],
+                "livenessProbe": {
+                  "httpGet": {
+                    "path": "/healthz",
+                    "port": "healthz",
+                    "scheme": "HTTP"
+                  },
+                  "initialDelaySeconds": 10,
+                  "timeoutSeconds": 5,
+                  "periodSeconds": 30,
+                  "successThreshold": 1,
+                  "failureThreshold": 5
+                },
+                "readinessProbe": {
+                  "httpGet": {
+                    "path": "/healthz",
+                    "port": "healthz",
+                    "scheme": "HTTP"
+                  },
+                  "initialDelaySeconds": 10,
+                  "timeoutSeconds": 5,
+                  "periodSeconds": 30,
+                  "successThreshold": 1,
+                  "failureThreshold": 5
+                },
+                "terminationMessagePath": "/dev/termination-log",
+                "terminationMessagePolicy": "File",
+                "imagePullPolicy": "Always",
+                "securityContext": {
+                  "privileged": true,
+                  "allowPrivilegeEscalation": true
+                }
+              }
+            ],
+            "restartPolicy": "Always",
+            "terminationGracePeriodSeconds": 30,
+            "dnsPolicy": "ClusterFirstWithHostNet",
+            "nodeSelector": {
+              "beta.kubernetes.io/os": "linux"
+            },
+            "serviceAccountName": "csi-admin",
+            "serviceAccount": "csi-admin",
+            "hostNetwork": true,
+            "hostPID": true,
+            "securityContext": {
+              
+            },
+            "affinity": {
+              "nodeAffinity": {
+                "requiredDuringSchedulingIgnoredDuringExecution": {
+                  "nodeSelectorTerms": [
+                    {
+                      "matchExpressions": [
+                        {
+                          "key": "type",
+                          "operator": "NotIn",
+                          "values": [
+                            "virtual-kubelet"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "schedulerName": "default-scheduler",
+            "tolerations": [
+              {
+                "operator": "Exists"
+              }
+            ],
+            "priorityClassName": "system-node-critical"
+          }
+        },
+        "updateStrategy": {
+          "type": "RollingUpdate",
+          "rollingUpdate": {
+            "maxUnavailable": "10%"
+          }
+        },
+        "revisionHistoryLimit": 10
+      },
+      "status": {
+        "currentNumberScheduled": 3,
+        "numberMisscheduled": 0,
+        "desiredNumberScheduled": 3,
+        "numberReady": 3,
+        "observedGeneration": 1,
+        "updatedNumberScheduled": 3,
+        "numberAvailable": 3
+      }
+    },
+    {
+      "metadata": {
+        "name": "kube-flannel-ds",
+        "namespace": "kube-system",
+        "uid": "d993a17f-c8e9-4317-9cdc-dc44967381fa",
+        "resourceVersion": "1662",
+        "generation": 1,
+        "creationTimestamp": "2021-09-24T03:35:54Z",
+        "labels": {
+          "app": "flannel",
+          "tier": "node"
+        },
+        "annotations": {
+          "deprecated.daemonset.template.generation": "1",
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"DaemonSet\",\"metadata\":{\"annotations\":{},\"labels\":{\"app\":\"flannel\",\"tier\":\"node\"},\"name\":\"kube-flannel-ds\",\"namespace\":\"kube-system\"},\"spec\":{\"selector\":{\"matchLabels\":{\"app\":\"flannel\",\"tier\":\"node\"}},\"template\":{\"metadata\":{\"annotations\":{\"scheduler.alpha.kubernetes.io/critical-pod\":\"\"},\"labels\":{\"app\":\"flannel\",\"tier\":\"node\"}},\"spec\":{\"affinity\":{\"nodeAffinity\":{\"requiredDuringSchedulingIgnoredDuringExecution\":{\"nodeSelectorTerms\":[{\"matchExpressions\":[{\"key\":\"type\",\"operator\":\"NotIn\",\"values\":[\"virtual-kubelet\"]}]}]}}},\"containers\":[{\"command\":[\"bash\",\"-c\",\"mount -o remount rw /proc/sys \\u0026\\u0026 /opt/bin/flanneld --ip-masq --kube-subnet-mgr --set-node-network-unavailable=false\"],\"env\":[{\"name\":\"POD_NAME\",\"valueFrom\":{\"fieldRef\":{\"fieldPath\":\"metadata.name\"}}},{\"name\":\"POD_NAMESPACE\",\"valueFrom\":{\"fieldRef\":{\"fieldPath\":\"metadata.namespace\"}}}],\"image\":\"registry-vpc.cn-shenzhen.aliyuncs.com/acs/flannel:v0.13.0.2-466064b-aliyun\",\"imagePullPolicy\":\"IfNotPresent\",\"livenessProbe\":{\"exec\":{\"command\":[\"sh\",\"-c\",\"ls -l /run/flannel/subnet.env\"]},\"failureThreshold\":8,\"initialDelaySeconds\":15,\"periodSeconds\":30,\"successThreshold\":1,\"timeoutSeconds\":15},\"name\":\"kube-flannel\",\"readinessProbe\":{\"exec\":{\"command\":[\"sh\",\"-c\",\"ls -l /run/flannel/subnet.env\"]}},\"resources\":{\"limits\":{\"cpu\":\"100m\",\"memory\":\"256Mi\"},\"requests\":{\"cpu\":\"100m\",\"memory\":\"100Mi\"}},\"securityContext\":{\"capabilities\":{\"add\":[\"NET_ADMIN\",\"SYS_ADMIN\"]},\"privileged\":false,\"readOnlyRootFilesystem\":false},\"volumeMounts\":[{\"mountPath\":\"/run\",\"name\":\"run\"},{\"mountPath\":\"/etc/kube-flannel/\",\"name\":\"flannel-cfg\"}]}],\"hostNetwork\":true,\"initContainers\":[{\"command\":[\"/bin/sh\",\"-c\",\"set -e -x; cp -f /etc/kube-flannel/cni-conf.json /etc/cni/net.d/10-flannel.conf\"],\"image\":\"registry-vpc.cn-shenzhen.aliyuncs.com/acs/flannel:v0.13.0.2-466064b-aliyun\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"install-cni\",\"securityContext\":{\"readOnlyRootFilesystem\":true},\"volumeMounts\":[{\"mountPath\":\"/etc/cni/net.d\",\"name\":\"cni\"},{\"mountPath\":\"/etc/kube-flannel/\",\"name\":\"flannel-cfg\"}]}],\"nodeSelector\":{\"kubernetes.io/os\":\"linux\"},\"priorityClassName\":\"system-node-critical\",\"serviceAccountName\":\"flannel\",\"tolerations\":[{\"operator\":\"Exists\"}],\"volumes\":[{\"hostPath\":{\"path\":\"/run\"},\"name\":\"run\"},{\"hostPath\":{\"path\":\"/etc/cni/net.d\"},\"name\":\"cni\"},{\"configMap\":{\"name\":\"kube-flannel-cfg\"},\"name\":\"flannel-cfg\"}]}},\"updateStrategy\":{\"type\":\"OnDelete\"}}}\n"
+        },
+        "managedFields": [
+          {
+            "manager": "rc",
+            "operation": "Update",
+            "apiVersion": "apps/v1",
+            "time": "2021-09-24T03:35:54Z",
+            "fieldsType": "FieldsV1",
+            "fieldsV1": {"f:metadata":{"f:annotations":{".":{},"f:deprecated.daemonset.template.generation":{},"f:kubectl.kubernetes.io/last-applied-configuration":{}},"f:labels":{".":{},"f:app":{},"f:tier":{}}},"f:spec":{"f:revisionHistoryLimit":{},"f:selector":{},"f:template":{"f:metadata":{"f:annotations":{".":{},"f:scheduler.alpha.kubernetes.io/critical-pod":{}},"f:labels":{".":{},"f:app":{},"f:tier":{}}},"f:spec":{"f:affinity":{".":{},"f:nodeAffinity":{".":{},"f:requiredDuringSchedulingIgnoredDuringExecution":{".":{},"f:nodeSelectorTerms":{}}}},"f:containers":{"k:{\"name\":\"kube-flannel\"}":{".":{},"f:command":{},"f:env":{".":{},"k:{\"name\":\"POD_NAME\"}":{".":{},"f:name":{},"f:valueFrom":{".":{},"f:fieldRef":{".":{},"f:apiVersion":{},"f:fieldPath":{}}}},"k:{\"name\":\"POD_NAMESPACE\"}":{".":{},"f:name":{},"f:valueFrom":{".":{},"f:fieldRef":{".":{},"f:apiVersion":{},"f:fieldPath":{}}}}},"f:image":{},"f:imagePullPolicy":{},"f:livenessProbe":{".":{},"f:exec":{".":{},"f:command":{}},"f:failureThreshold":{},"f:initialDelaySeconds":{},"f:periodSeconds":{},"f:successThreshold":{},"f:timeoutSeconds":{}},"f:name":{},"f:readinessProbe":{".":{},"f:exec":{".":{},"f:command":{}},"f:failureThreshold":{},"f:periodSeconds":{},"f:successThreshold":{},"f:timeoutSeconds":{}},"f:resources":{".":{},"f:limits":{".":{},"f:cpu":{},"f:memory":{}},"f:requests":{".":{},"f:cpu":{},"f:memory":{}}},"f:securityContext":{".":{},"f:capabilities":{".":{},"f:add":{}},"f:privileged":{},"f:readOnlyRootFilesystem":{}},"f:terminationMessagePath":{},"f:terminationMessagePolicy":{},"f:volumeMounts":{".":{},"k:{\"mountPath\":\"/etc/kube-flannel/\"}":{".":{},"f:mountPath":{},"f:name":{}},"k:{\"mountPath\":\"/run\"}":{".":{},"f:mountPath":{},"f:name":{}}}}},"f:dnsPolicy":{},"f:hostNetwork":{},"f:initContainers":{".":{},"k:{\"name\":\"install-cni\"}":{".":{},"f:command":{},"f:image":{},"f:imagePullPolicy":{},"f:name":{},"f:resources":{},"f:securityContext":{".":{},"f:readOnlyRootFilesystem":{}},"f:terminationMessagePath":{},"f:terminationMessagePolicy":{},"f:volumeMounts":{".":{},"k:{\"mountPath\":\"/etc/cni/net.d\"}":{".":{},"f:mountPath":{},"f:name":{}},"k:{\"mountPath\":\"/etc/kube-flannel/\"}":{".":{},"f:mountPath":{},"f:name":{}}}}},"f:nodeSelector":{".":{},"f:kubernetes.io/os":{}},"f:priorityClassName":{},"f:restartPolicy":{},"f:schedulerName":{},"f:securityContext":{},"f:serviceAccount":{},"f:serviceAccountName":{},"f:terminationGracePeriodSeconds":{},"f:tolerations":{},"f:volumes":{".":{},"k:{\"name\":\"cni\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}},"k:{\"name\":\"flannel-cfg\"}":{".":{},"f:configMap":{".":{},"f:defaultMode":{},"f:name":{}},"f:name":{}},"k:{\"name\":\"run\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}}}}},"f:updateStrategy":{"f:type":{}}}}
+          },
+          {
+            "manager": "kube-controller-manager",
+            "operation": "Update",
+            "apiVersion": "apps/v1",
+            "time": "2021-09-24T03:36:24Z",
+            "fieldsType": "FieldsV1",
+            "fieldsV1": {"f:status":{"f:currentNumberScheduled":{},"f:desiredNumberScheduled":{},"f:numberAvailable":{},"f:numberReady":{},"f:observedGeneration":{},"f:updatedNumberScheduled":{}}}
+          }
+        ]
+      },
+      "spec": {
+        "selector": {
+          "matchLabels": {
+            "app": "flannel",
+            "tier": "node"
+          }
+        },
+        "template": {
+          "metadata": {
+            "creationTimestamp": null,
+            "labels": {
+              "app": "flannel",
+              "tier": "node"
+            },
+            "annotations": {
+              "scheduler.alpha.kubernetes.io/critical-pod": ""
+            }
+          },
+          "spec": {
+            "volumes": [
+              {
+                "name": "run",
+                "hostPath": {
+                  "path": "/run",
+                  "type": ""
+                }
+              },
+              {
+                "name": "cni",
+                "hostPath": {
+                  "path": "/etc/cni/net.d",
+                  "type": ""
+                }
+              },
+              {
+                "name": "flannel-cfg",
+                "configMap": {
+                  "name": "kube-flannel-cfg",
+                  "defaultMode": 420
+                }
+              }
+            ],
+            "initContainers": [
+              {
+                "name": "install-cni",
+                "image": "registry-vpc.cn-shenzhen.aliyuncs.com/acs/flannel:v0.13.0.2-466064b-aliyun",
+                "command": [
+                  "/bin/sh",
+                  "-c",
+                  "set -e -x; cp -f /etc/kube-flannel/cni-conf.json /etc/cni/net.d/10-flannel.conf"
+                ],
+                "resources": {
+                  
+                },
+                "volumeMounts": [
+                  {
+                    "name": "cni",
+                    "mountPath": "/etc/cni/net.d"
+                  },
+                  {
+                    "name": "flannel-cfg",
+                    "mountPath": "/etc/kube-flannel/"
+                  }
+                ],
+                "terminationMessagePath": "/dev/termination-log",
+                "terminationMessagePolicy": "File",
+                "imagePullPolicy": "IfNotPresent",
+                "securityContext": {
+                  "readOnlyRootFilesystem": true
+                }
+              }
+            ],
+            "containers": [
+              {
+                "name": "kube-flannel",
+                "image": "registry-vpc.cn-shenzhen.aliyuncs.com/acs/flannel:v0.13.0.2-466064b-aliyun",
+                "command": [
+                  "bash",
+                  "-c",
+                  "mount -o remount rw /proc/sys \u0026\u0026 /opt/bin/flanneld --ip-masq --kube-subnet-mgr --set-node-network-unavailable=false"
+                ],
+                "env": [
+                  {
+                    "name": "POD_NAME",
+                    "valueFrom": {
+                      "fieldRef": {
+                        "apiVersion": "v1",
+                        "fieldPath": "metadata.name"
+                      }
+                    }
+                  },
+                  {
+                    "name": "POD_NAMESPACE",
+                    "valueFrom": {
+                      "fieldRef": {
+                        "apiVersion": "v1",
+                        "fieldPath": "metadata.namespace"
+                      }
+                    }
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "100m",
+                    "memory": "256Mi"
+                  },
+                  "requests": {
+                    "cpu": "100m",
+                    "memory": "100Mi"
+                  }
+                },
+                "volumeMounts": [
+                  {
+                    "name": "run",
+                    "mountPath": "/run"
+                  },
+                  {
+                    "name": "flannel-cfg",
+                    "mountPath": "/etc/kube-flannel/"
+                  }
+                ],
+                "livenessProbe": {
+                  "exec": {
+                    "command": [
+                      "sh",
+                      "-c",
+                      "ls -l /run/flannel/subnet.env"
+                    ]
+                  },
+                  "initialDelaySeconds": 15,
+                  "timeoutSeconds": 15,
+                  "periodSeconds": 30,
+                  "successThreshold": 1,
+                  "failureThreshold": 8
+                },
+                "readinessProbe": {
+                  "exec": {
+                    "command": [
+                      "sh",
+                      "-c",
+                      "ls -l /run/flannel/subnet.env"
+                    ]
+                  },
+                  "timeoutSeconds": 1,
+                  "periodSeconds": 10,
+                  "successThreshold": 1,
+                  "failureThreshold": 3
+                },
+                "terminationMessagePath": "/dev/termination-log",
+                "terminationMessagePolicy": "File",
+                "imagePullPolicy": "IfNotPresent",
+                "securityContext": {
+                  "capabilities": {
+                    "add": [
+                      "NET_ADMIN",
+                      "SYS_ADMIN"
+                    ]
+                  },
+                  "privileged": false,
+                  "readOnlyRootFilesystem": false
+                }
+              }
+            ],
+            "restartPolicy": "Always",
+            "terminationGracePeriodSeconds": 30,
+            "dnsPolicy": "ClusterFirst",
+            "nodeSelector": {
+              "kubernetes.io/os": "linux"
+            },
+            "serviceAccountName": "flannel",
+            "serviceAccount": "flannel",
+            "hostNetwork": true,
+            "securityContext": {
+              
+            },
+            "affinity": {
+              "nodeAffinity": {
+                "requiredDuringSchedulingIgnoredDuringExecution": {
+                  "nodeSelectorTerms": [
+                    {
+                      "matchExpressions": [
+                        {
+                          "key": "type",
+                          "operator": "NotIn",
+                          "values": [
+                            "virtual-kubelet"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "schedulerName": "default-scheduler",
+            "tolerations": [
+              {
+                "operator": "Exists"
+              }
+            ],
+            "priorityClassName": "system-node-critical"
+          }
+        },
+        "updateStrategy": {
+          "type": "OnDelete"
+        },
+        "revisionHistoryLimit": 10
+      },
+      "status": {
+        "currentNumberScheduled": 3,
+        "numberMisscheduled": 0,
+        "desiredNumberScheduled": 3,
+        "numberReady": 3,
+        "observedGeneration": 1,
+        "updatedNumberScheduled": 3,
+        "numberAvailable": 3
+      }
+    },
+    {
+      "metadata": {
+        "name": "kube-flannel-ds-windows",
+        "namespace": "kube-system",
+        "uid": "2c8aeea0-a14d-4a37-886e-2fc8fe5ad102",
+        "resourceVersion": "1263",
+        "generation": 1,
+        "creationTimestamp": "2021-09-24T03:35:54Z",
+        "labels": {
+          "app": "flannel-windows",
+          "tier": "node"
+        },
+        "annotations": {
+          "deprecated.daemonset.template.generation": "1",
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"DaemonSet\",\"metadata\":{\"annotations\":{},\"labels\":{\"app\":\"flannel-windows\",\"tier\":\"node\"},\"name\":\"kube-flannel-ds-windows\",\"namespace\":\"kube-system\"},\"spec\":{\"selector\":{\"matchLabels\":{\"app\":\"flannel-windows\",\"tier\":\"node\"}},\"template\":{\"metadata\":{\"annotations\":{\"scheduler.alpha.kubernetes.io/critical-pod\":\"\"},\"labels\":{\"app\":\"flannel-windows\",\"tier\":\"node\"}},\"spec\":{\"affinity\":{\"nodeAffinity\":{\"requiredDuringSchedulingIgnoredDuringExecution\":{\"nodeSelectorTerms\":[{\"matchExpressions\":[{\"key\":\"type\",\"operator\":\"NotIn\",\"values\":[\"virtual-kubelet\"]},{\"key\":\"beta.kubernetes.io/os\",\"operator\":\"In\",\"values\":[\"windows\"]},{\"key\":\"windows.alibabacloud.com/deployment-topology\",\"operator\":\"In\",\"values\":[\"2.0\"]}]},{\"matchExpressions\":[{\"key\":\"type\",\"operator\":\"NotIn\",\"values\":[\"virtual-kubelet\"]},{\"key\":\"kubernetes.io/os\",\"operator\":\"In\",\"values\":[\"windows\"]},{\"key\":\"windows.alibabacloud.com/deployment-topology\",\"operator\":\"In\",\"values\":[\"2.0\"]}]}]}}},\"containers\":[{\"command\":[\"pwsh.exe\",\"-NoLogo\",\"-NonInteractive\",\"-File\",\"entrypoint.ps1\"],\"env\":[{\"name\":\"CLUSTER_DOMAIN\",\"value\":\"\"},{\"name\":\"CLUSTER_SERVICE_CIDR\",\"value\":\"192.168.0.0/16\"},{\"name\":\"NODE_CIDR\",\"value\":\"10.0.0.0/8\"},{\"name\":\"NODE_NAME\",\"valueFrom\":{\"fieldRef\":{\"apiVersion\":\"v1\",\"fieldPath\":\"spec.nodeName\"}}}],\"image\":\"registry-vpc.cn-shenzhen.aliyuncs.com/acs/flannel-windows:v0.13.1-aliyun.3\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"kube-flannel\",\"volumeMounts\":[{\"mountPath\":\"c:/etc/kube-flannel\",\"name\":\"config\"},{\"mountPath\":\"c:/etc/cni/net.d\",\"name\":\"cni-config\"},{\"mountPath\":\"c:/host/etc/kube-flannel\",\"name\":\"host-config\"},{\"mountPath\":\"c:/host/etc/cni/net.d\",\"name\":\"host-cni-config\"},{\"mountPath\":\"c:/host/opt/bin/\",\"name\":\"host-binary\"},{\"mountPath\":\"c:/host/opt/cni/bin/\",\"name\":\"host-cni-binary\"},{\"mountPath\":\"\\\\\\\\.\\\\pipe\\\\rancher_wins\",\"name\":\"wins-pipe\"}]}],\"hostNetwork\":true,\"priorityClassName\":\"system-node-critical\",\"serviceAccountName\":\"flannel\",\"tolerations\":[{\"operator\":\"Exists\"}],\"volumes\":[{\"name\":\"config\",\"projected\":{\"sources\":[{\"configMap\":{\"items\":[{\"key\":\"config.conf\",\"path\":\"config.conf\"},{\"key\":\"kubeconfig.conf\",\"path\":\"kubeconfig.conf\"}],\"name\":\"kube-flannel-cfg-windows\"}}]}},{\"name\":\"cni-config\",\"projected\":{\"sources\":[{\"configMap\":{\"items\":[{\"key\":\"10-flannel.conf.tmpl\",\"path\":\"10-flannel.conf.tmpl\"}],\"name\":\"kube-flannel-cfg-windows\"}}]}},{\"hostPath\":{\"path\":\"c:/etc/kube-flannel\",\"type\":\"DirectoryOrCreate\"},\"name\":\"host-config\"},{\"hostPath\":{\"path\":\"c:/etc/cni/net.d\",\"type\":\"DirectoryOrCreate\"},\"name\":\"host-cni-config\"},{\"hostPath\":{\"path\":\"c:/opt/bin\",\"type\":\"DirectoryOrCreate\"},\"name\":\"host-binary\"},{\"hostPath\":{\"path\":\"c:/opt/cni/bin\",\"type\":\"DirectoryOrCreate\"},\"name\":\"host-cni-binary\"},{\"hostPath\":{\"path\":\"\\\\\\\\.\\\\pipe\\\\rancher_wins\"},\"name\":\"wins-pipe\"}]}},\"updateStrategy\":{\"type\":\"OnDelete\"}}}\n"
+        },
+        "managedFields": [
+          {
+            "manager": "kube-controller-manager",
+            "operation": "Update",
+            "apiVersion": "apps/v1",
+            "time": "2021-09-24T03:35:54Z",
+            "fieldsType": "FieldsV1",
+            "fieldsV1": {"f:status":{"f:observedGeneration":{}}}
+          },
+          {
+            "manager": "rc",
+            "operation": "Update",
+            "apiVersion": "apps/v1",
+            "time": "2021-09-24T03:35:54Z",
+            "fieldsType": "FieldsV1",
+            "fieldsV1": {"f:metadata":{"f:annotations":{".":{},"f:deprecated.daemonset.template.generation":{},"f:kubectl.kubernetes.io/last-applied-configuration":{}},"f:labels":{".":{},"f:app":{},"f:tier":{}}},"f:spec":{"f:revisionHistoryLimit":{},"f:selector":{},"f:template":{"f:metadata":{"f:annotations":{".":{},"f:scheduler.alpha.kubernetes.io/critical-pod":{}},"f:labels":{".":{},"f:app":{},"f:tier":{}}},"f:spec":{"f:affinity":{".":{},"f:nodeAffinity":{".":{},"f:requiredDuringSchedulingIgnoredDuringExecution":{".":{},"f:nodeSelectorTerms":{}}}},"f:containers":{"k:{\"name\":\"kube-flannel\"}":{".":{},"f:command":{},"f:env":{".":{},"k:{\"name\":\"CLUSTER_DOMAIN\"}":{".":{},"f:name":{}},"k:{\"name\":\"CLUSTER_SERVICE_CIDR\"}":{".":{},"f:name":{},"f:value":{}},"k:{\"name\":\"NODE_CIDR\"}":{".":{},"f:name":{},"f:value":{}},"k:{\"name\":\"NODE_NAME\"}":{".":{},"f:name":{},"f:valueFrom":{".":{},"f:fieldRef":{".":{},"f:apiVersion":{},"f:fieldPath":{}}}}},"f:image":{},"f:imagePullPolicy":{},"f:name":{},"f:resources":{},"f:terminationMessagePath":{},"f:terminationMessagePolicy":{},"f:volumeMounts":{".":{},"k:{\"mountPath\":\"\\\\\\\\.\\\\pipe\\\\rancher_wins\"}":{".":{},"f:mountPath":{},"f:name":{}},"k:{\"mountPath\":\"c:/etc/cni/net.d\"}":{".":{},"f:mountPath":{},"f:name":{}},"k:{\"mountPath\":\"c:/etc/kube-flannel\"}":{".":{},"f:mountPath":{},"f:name":{}},"k:{\"mountPath\":\"c:/host/etc/cni/net.d\"}":{".":{},"f:mountPath":{},"f:name":{}},"k:{\"mountPath\":\"c:/host/etc/kube-flannel\"}":{".":{},"f:mountPath":{},"f:name":{}},"k:{\"mountPath\":\"c:/host/opt/bin/\"}":{".":{},"f:mountPath":{},"f:name":{}},"k:{\"mountPath\":\"c:/host/opt/cni/bin/\"}":{".":{},"f:mountPath":{},"f:name":{}}}}},"f:dnsPolicy":{},"f:hostNetwork":{},"f:priorityClassName":{},"f:restartPolicy":{},"f:schedulerName":{},"f:securityContext":{},"f:serviceAccount":{},"f:serviceAccountName":{},"f:terminationGracePeriodSeconds":{},"f:tolerations":{},"f:volumes":{".":{},"k:{\"name\":\"cni-config\"}":{".":{},"f:name":{},"f:projected":{".":{},"f:defaultMode":{},"f:sources":{}}},"k:{\"name\":\"config\"}":{".":{},"f:name":{},"f:projected":{".":{},"f:defaultMode":{},"f:sources":{}}},"k:{\"name\":\"host-binary\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}},"k:{\"name\":\"host-cni-binary\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}},"k:{\"name\":\"host-cni-config\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}},"k:{\"name\":\"host-config\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}},"k:{\"name\":\"wins-pipe\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}}}}},"f:updateStrategy":{"f:type":{}}}}
+          }
+        ]
+      },
+      "spec": {
+        "selector": {
+          "matchLabels": {
+            "app": "flannel-windows",
+            "tier": "node"
+          }
+        },
+        "template": {
+          "metadata": {
+            "creationTimestamp": null,
+            "labels": {
+              "app": "flannel-windows",
+              "tier": "node"
+            },
+            "annotations": {
+              "scheduler.alpha.kubernetes.io/critical-pod": ""
+            }
+          },
+          "spec": {
+            "volumes": [
+              {
+                "name": "config",
+                "projected": {
+                  "sources": [
+                    {
+                      "configMap": {
+                        "name": "kube-flannel-cfg-windows",
+                        "items": [
+                          {
+                            "key": "config.conf",
+                            "path": "config.conf"
+                          },
+                          {
+                            "key": "kubeconfig.conf",
+                            "path": "kubeconfig.conf"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "defaultMode": 420
+                }
+              },
+              {
+                "name": "cni-config",
+                "projected": {
+                  "sources": [
+                    {
+                      "configMap": {
+                        "name": "kube-flannel-cfg-windows",
+                        "items": [
+                          {
+                            "key": "10-flannel.conf.tmpl",
+                            "path": "10-flannel.conf.tmpl"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "defaultMode": 420
+                }
+              },
+              {
+                "name": "host-config",
+                "hostPath": {
+                  "path": "c:/etc/kube-flannel",
+                  "type": "DirectoryOrCreate"
+                }
+              },
+              {
+                "name": "host-cni-config",
+                "hostPath": {
+                  "path": "c:/etc/cni/net.d",
+                  "type": "DirectoryOrCreate"
+                }
+              },
+              {
+                "name": "host-binary",
+                "hostPath": {
+                  "path": "c:/opt/bin",
+                  "type": "DirectoryOrCreate"
+                }
+              },
+              {
+                "name": "host-cni-binary",
+                "hostPath": {
+                  "path": "c:/opt/cni/bin",
+                  "type": "DirectoryOrCreate"
+                }
+              },
+              {
+                "name": "wins-pipe",
+                "hostPath": {
+                  "path": "\\\\.\\pipe\\rancher_wins",
+                  "type": ""
+                }
+              }
+            ],
+            "containers": [
+              {
+                "name": "kube-flannel",
+                "image": "registry-vpc.cn-shenzhen.aliyuncs.com/acs/flannel-windows:v0.13.1-aliyun.3",
+                "command": [
+                  "pwsh.exe",
+                  "-NoLogo",
+                  "-NonInteractive",
+                  "-File",
+                  "entrypoint.ps1"
+                ],
+                "env": [
+                  {
+                    "name": "CLUSTER_DOMAIN"
+                  },
+                  {
+                    "name": "CLUSTER_SERVICE_CIDR",
+                    "value": "192.168.0.0/16"
+                  },
+                  {
+                    "name": "NODE_CIDR",
+                    "value": "10.0.0.0/8"
+                  },
+                  {
+                    "name": "NODE_NAME",
+                    "valueFrom": {
+                      "fieldRef": {
+                        "apiVersion": "v1",
+                        "fieldPath": "spec.nodeName"
+                      }
+                    }
+                  }
+                ],
+                "resources": {
+                  
+                },
+                "volumeMounts": [
+                  {
+                    "name": "config",
+                    "mountPath": "c:/etc/kube-flannel"
+                  },
+                  {
+                    "name": "cni-config",
+                    "mountPath": "c:/etc/cni/net.d"
+                  },
+                  {
+                    "name": "host-config",
+                    "mountPath": "c:/host/etc/kube-flannel"
+                  },
+                  {
+                    "name": "host-cni-config",
+                    "mountPath": "c:/host/etc/cni/net.d"
+                  },
+                  {
+                    "name": "host-binary",
+                    "mountPath": "c:/host/opt/bin/"
+                  },
+                  {
+                    "name": "host-cni-binary",
+                    "mountPath": "c:/host/opt/cni/bin/"
+                  },
+                  {
+                    "name": "wins-pipe",
+                    "mountPath": "\\\\.\\pipe\\rancher_wins"
+                  }
+                ],
+                "terminationMessagePath": "/dev/termination-log",
+                "terminationMessagePolicy": "File",
+                "imagePullPolicy": "IfNotPresent"
+              }
+            ],
+            "restartPolicy": "Always",
+            "terminationGracePeriodSeconds": 30,
+            "dnsPolicy": "ClusterFirst",
+            "serviceAccountName": "flannel",
+            "serviceAccount": "flannel",
+            "hostNetwork": true,
+            "securityContext": {
+              
+            },
+            "affinity": {
+              "nodeAffinity": {
+                "requiredDuringSchedulingIgnoredDuringExecution": {
+                  "nodeSelectorTerms": [
+                    {
+                      "matchExpressions": [
+                        {
+                          "key": "type",
+                          "operator": "NotIn",
+                          "values": [
+                            "virtual-kubelet"
+                          ]
+                        },
+                        {
+                          "key": "beta.kubernetes.io/os",
+                          "operator": "In",
+                          "values": [
+                            "windows"
+                          ]
+                        },
+                        {
+                          "key": "windows.alibabacloud.com/deployment-topology",
+                          "operator": "In",
+                          "values": [
+                            "2.0"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "matchExpressions": [
+                        {
+                          "key": "type",
+                          "operator": "NotIn",
+                          "values": [
+                            "virtual-kubelet"
+                          ]
+                        },
+                        {
+                          "key": "kubernetes.io/os",
+                          "operator": "In",
+                          "values": [
+                            "windows"
+                          ]
+                        },
+                        {
+                          "key": "windows.alibabacloud.com/deployment-topology",
+                          "operator": "In",
+                          "values": [
+                            "2.0"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "schedulerName": "default-scheduler",
+            "tolerations": [
+              {
+                "operator": "Exists"
+              }
+            ],
+            "priorityClassName": "system-node-critical"
+          }
+        },
+        "updateStrategy": {
+          "type": "OnDelete"
+        },
+        "revisionHistoryLimit": 10
+      },
+      "status": {
+        "currentNumberScheduled": 0,
+        "numberMisscheduled": 0,
+        "desiredNumberScheduled": 0,
+        "numberReady": 0,
+        "observedGeneration": 1
+      }
+    },
+    {
+      "metadata": {
+        "name": "kube-proxy-worker",
+        "namespace": "kube-system",
+        "uid": "7333f248-3dd8-4cb8-9111-cf1b6f42e957",
+        "resourceVersion": "1508",
+        "generation": 1,
+        "creationTimestamp": "2021-09-24T03:35:52Z",
+        "labels": {
+          "k8s-app": "kube-proxy-worker"
+        },
+        "annotations": {
+          "deprecated.daemonset.template.generation": "1",
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"DaemonSet\",\"metadata\":{\"annotations\":{},\"labels\":{\"k8s-app\":\"kube-proxy-worker\"},\"name\":\"kube-proxy-worker\",\"namespace\":\"kube-system\"},\"spec\":{\"selector\":{\"matchLabels\":{\"k8s-app\":\"kube-proxy-worker\"}},\"template\":{\"metadata\":{\"labels\":{\"k8s-app\":\"kube-proxy-worker\"}},\"spec\":{\"affinity\":{\"nodeAffinity\":{\"requiredDuringSchedulingIgnoredDuringExecution\":{\"nodeSelectorTerms\":[{\"matchExpressions\":[{\"key\":\"type\",\"operator\":\"NotIn\",\"values\":[\"virtual-kubelet\"]}]}]}}},\"containers\":[{\"command\":[\"/usr/local/bin/kube-proxy\",\"--config=/var/lib/kube-proxy/config.conf\",\"--hostname-override=$(NODE_NAME)\"],\"env\":[{\"name\":\"NODE_NAME\",\"valueFrom\":{\"fieldRef\":{\"fieldPath\":\"spec.nodeName\"}}}],\"image\":\"registry-vpc.cn-shenzhen.aliyuncs.com/acs/kube-proxy:v1.20.4-aliyun.1\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"kube-proxy-worker\",\"resources\":{\"requests\":{\"cpu\":\"100m\",\"memory\":\"100m\"}},\"securityContext\":{\"privileged\":true},\"volumeMounts\":[{\"mountPath\":\"/var/lib/kube-proxy\",\"name\":\"kube-proxy-worker\"},{\"mountPath\":\"/run/xtables.lock\",\"name\":\"xtables-lock\",\"readOnly\":false},{\"mountPath\":\"/lib/modules\",\"name\":\"lib-modules\",\"readOnly\":true}]}],\"hostNetwork\":true,\"nodeSelector\":{\"beta.kubernetes.io/os\":\"linux\"},\"priorityClassName\":\"system-node-critical\",\"restartPolicy\":\"Always\",\"schedulerName\":\"default-scheduler\",\"securityContext\":{},\"serviceAccount\":\"kube-proxy\",\"serviceAccountName\":\"kube-proxy\",\"tolerations\":[{\"operator\":\"Exists\"}],\"volumes\":[{\"configMap\":{\"name\":\"kube-proxy-worker\"},\"name\":\"kube-proxy-worker\"},{\"hostPath\":{\"path\":\"/run/xtables.lock\",\"type\":\"FileOrCreate\"},\"name\":\"xtables-lock\"},{\"hostPath\":{\"path\":\"/lib/modules\"},\"name\":\"lib-modules\"}]}},\"updateStrategy\":{\"rollingUpdate\":{\"maxUnavailable\":\"10%\"},\"type\":\"RollingUpdate\"}}}\n"
+        },
+        "managedFields": [
+          {
+            "manager": "rc",
+            "operation": "Update",
+            "apiVersion": "apps/v1",
+            "time": "2021-09-24T03:35:52Z",
+            "fieldsType": "FieldsV1",
+            "fieldsV1": {"f:metadata":{"f:annotations":{".":{},"f:deprecated.daemonset.template.generation":{},"f:kubectl.kubernetes.io/last-applied-configuration":{}},"f:labels":{".":{},"f:k8s-app":{}}},"f:spec":{"f:revisionHistoryLimit":{},"f:selector":{},"f:template":{"f:metadata":{"f:labels":{".":{},"f:k8s-app":{}}},"f:spec":{"f:affinity":{".":{},"f:nodeAffinity":{".":{},"f:requiredDuringSchedulingIgnoredDuringExecution":{".":{},"f:nodeSelectorTerms":{}}}},"f:containers":{"k:{\"name\":\"kube-proxy-worker\"}":{".":{},"f:command":{},"f:env":{".":{},"k:{\"name\":\"NODE_NAME\"}":{".":{},"f:name":{},"f:valueFrom":{".":{},"f:fieldRef":{".":{},"f:apiVersion":{},"f:fieldPath":{}}}}},"f:image":{},"f:imagePullPolicy":{},"f:name":{},"f:resources":{".":{},"f:requests":{".":{},"f:cpu":{},"f:memory":{}}},"f:securityContext":{".":{},"f:privileged":{}},"f:terminationMessagePath":{},"f:terminationMessagePolicy":{},"f:volumeMounts":{".":{},"k:{\"mountPath\":\"/lib/modules\"}":{".":{},"f:mountPath":{},"f:name":{},"f:readOnly":{}},"k:{\"mountPath\":\"/run/xtables.lock\"}":{".":{},"f:mountPath":{},"f:name":{}},"k:{\"mountPath\":\"/var/lib/kube-proxy\"}":{".":{},"f:mountPath":{},"f:name":{}}}}},"f:dnsPolicy":{},"f:hostNetwork":{},"f:nodeSelector":{".":{},"f:beta.kubernetes.io/os":{}},"f:priorityClassName":{},"f:restartPolicy":{},"f:schedulerName":{},"f:securityContext":{},"f:serviceAccount":{},"f:serviceAccountName":{},"f:terminationGracePeriodSeconds":{},"f:tolerations":{},"f:volumes":{".":{},"k:{\"name\":\"kube-proxy-worker\"}":{".":{},"f:configMap":{".":{},"f:defaultMode":{},"f:name":{}},"f:name":{}},"k:{\"name\":\"lib-modules\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}},"k:{\"name\":\"xtables-lock\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}}}}},"f:updateStrategy":{"f:rollingUpdate":{".":{},"f:maxUnavailable":{}},"f:type":{}}}}
+          },
+          {
+            "manager": "kube-controller-manager",
+            "operation": "Update",
+            "apiVersion": "apps/v1",
+            "time": "2021-09-24T03:36:08Z",
+            "fieldsType": "FieldsV1",
+            "fieldsV1": {"f:status":{"f:currentNumberScheduled":{},"f:desiredNumberScheduled":{},"f:numberAvailable":{},"f:numberReady":{},"f:observedGeneration":{},"f:updatedNumberScheduled":{}}}
+          }
+        ]
+      },
+      "spec": {
+        "selector": {
+          "matchLabels": {
+            "k8s-app": "kube-proxy-worker"
+          }
+        },
+        "template": {
+          "metadata": {
+            "creationTimestamp": null,
+            "labels": {
+              "k8s-app": "kube-proxy-worker"
+            }
+          },
+          "spec": {
+            "volumes": [
+              {
+                "name": "kube-proxy-worker",
+                "configMap": {
+                  "name": "kube-proxy-worker",
+                  "defaultMode": 420
+                }
+              },
+              {
+                "name": "xtables-lock",
+                "hostPath": {
+                  "path": "/run/xtables.lock",
+                  "type": "FileOrCreate"
+                }
+              },
+              {
+                "name": "lib-modules",
+                "hostPath": {
+                  "path": "/lib/modules",
+                  "type": ""
+                }
+              }
+            ],
+            "containers": [
+              {
+                "name": "kube-proxy-worker",
+                "image": "registry-vpc.cn-shenzhen.aliyuncs.com/acs/kube-proxy:v1.20.4-aliyun.1",
+                "command": [
+                  "/usr/local/bin/kube-proxy",
+                  "--config=/var/lib/kube-proxy/config.conf",
+                  "--hostname-override=$(NODE_NAME)"
+                ],
+                "env": [
+                  {
+                    "name": "NODE_NAME",
+                    "valueFrom": {
+                      "fieldRef": {
+                        "apiVersion": "v1",
+                        "fieldPath": "spec.nodeName"
+                      }
+                    }
+                  }
+                ],
+                "resources": {
+                  "requests": {
+                    "cpu": "100m",
+                    "memory": "100m"
+                  }
+                },
+                "volumeMounts": [
+                  {
+                    "name": "kube-proxy-worker",
+                    "mountPath": "/var/lib/kube-proxy"
+                  },
+                  {
+                    "name": "xtables-lock",
+                    "mountPath": "/run/xtables.lock"
+                  },
+                  {
+                    "name": "lib-modules",
+                    "readOnly": true,
+                    "mountPath": "/lib/modules"
+                  }
+                ],
+                "terminationMessagePath": "/dev/termination-log",
+                "terminationMessagePolicy": "File",
+                "imagePullPolicy": "IfNotPresent",
+                "securityContext": {
+                  "privileged": true
+                }
+              }
+            ],
+            "restartPolicy": "Always",
+            "terminationGracePeriodSeconds": 30,
+            "dnsPolicy": "ClusterFirst",
+            "nodeSelector": {
+              "beta.kubernetes.io/os": "linux"
+            },
+            "serviceAccountName": "kube-proxy",
+            "serviceAccount": "kube-proxy",
+            "hostNetwork": true,
+            "securityContext": {
+              
+            },
+            "affinity": {
+              "nodeAffinity": {
+                "requiredDuringSchedulingIgnoredDuringExecution": {
+                  "nodeSelectorTerms": [
+                    {
+                      "matchExpressions": [
+                        {
+                          "key": "type",
+                          "operator": "NotIn",
+                          "values": [
+                            "virtual-kubelet"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "schedulerName": "default-scheduler",
+            "tolerations": [
+              {
+                "operator": "Exists"
+              }
+            ],
+            "priorityClassName": "system-node-critical"
+          }
+        },
+        "updateStrategy": {
+          "type": "RollingUpdate",
+          "rollingUpdate": {
+            "maxUnavailable": "10%"
+          }
+        },
+        "revisionHistoryLimit": 10
+      },
+      "status": {
+        "currentNumberScheduled": 3,
+        "numberMisscheduled": 0,
+        "desiredNumberScheduled": 3,
+        "numberReady": 3,
+        "observedGeneration": 1,
+        "updatedNumberScheduled": 3,
+        "numberAvailable": 3
+      }
+    },
+    {
+      "metadata": {
+        "name": "kube-proxy-worker-windows",
+        "namespace": "kube-system",
+        "uid": "eb5718ea-f24f-4717-8403-970e7cf5b958",
+        "resourceVersion": "1066",
+        "generation": 1,
+        "creationTimestamp": "2021-09-24T03:35:52Z",
+        "labels": {
+          "k8s-app": "kube-proxy-worker-windows"
+        },
+        "annotations": {
+          "deprecated.daemonset.template.generation": "1",
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"DaemonSet\",\"metadata\":{\"annotations\":{},\"labels\":{\"k8s-app\":\"kube-proxy-worker-windows\"},\"name\":\"kube-proxy-worker-windows\",\"namespace\":\"kube-system\"},\"spec\":{\"selector\":{\"matchLabels\":{\"k8s-app\":\"kube-proxy-worker-windows\"}},\"template\":{\"metadata\":{\"annotations\":{\"scheduler.alpha.kubernetes.io/critical-pod\":\"\"},\"labels\":{\"k8s-app\":\"kube-proxy-worker-windows\"}},\"spec\":{\"affinity\":{\"nodeAffinity\":{\"requiredDuringSchedulingIgnoredDuringExecution\":{\"nodeSelectorTerms\":[{\"matchExpressions\":[{\"key\":\"type\",\"operator\":\"NotIn\",\"values\":[\"virtual-kubelet\"]},{\"key\":\"beta.kubernetes.io/os\",\"operator\":\"In\",\"values\":[\"windows\"]},{\"key\":\"windows.alibabacloud.com/deployment-topology\",\"operator\":\"In\",\"values\":[\"2.0\"]}]},{\"matchExpressions\":[{\"key\":\"type\",\"operator\":\"NotIn\",\"values\":[\"virtual-kubelet\"]},{\"key\":\"kubernetes.io/os\",\"operator\":\"In\",\"values\":[\"windows\"]},{\"key\":\"windows.alibabacloud.com/deployment-topology\",\"operator\":\"In\",\"values\":[\"2.0\"]}]}]}}},\"containers\":[{\"command\":[\"pwsh.exe\",\"-NoLogo\",\"-NonInteractive\",\"-File\",\"entrypoint.ps1\"],\"env\":[{\"name\":\"CLUSTER_SERVER\",\"value\":\"https://10.0.0.182:6443\"},{\"name\":\"NODE_NAME\",\"valueFrom\":{\"fieldRef\":{\"apiVersion\":\"v1\",\"fieldPath\":\"spec.nodeName\"}}}],\"image\":\"registry-vpc.cn-shenzhen.aliyuncs.com/acs/kube-proxy-windows:v1.20.4-aliyun.1\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"kube-proxy-worker\",\"volumeMounts\":[{\"mountPath\":\"c:/etc/kube-proxy\",\"name\":\"config\"},{\"mountPath\":\"c:/host/etc/kube-proxy\",\"name\":\"host-config\"},{\"mountPath\":\"c:/host/opt/bin\",\"name\":\"host-binary\"},{\"mountPath\":\"\\\\\\\\.\\\\pipe\\\\rancher_wins\",\"name\":\"wins-pipe\"}]}],\"hostNetwork\":true,\"priorityClassName\":\"system-node-critical\",\"restartPolicy\":\"Always\",\"schedulerName\":\"default-scheduler\",\"serviceAccountName\":\"kube-proxy\",\"tolerations\":[{\"operator\":\"Exists\"}],\"volumes\":[{\"configMap\":{\"defaultMode\":420,\"name\":\"kube-proxy-worker-windows\"},\"name\":\"config\"},{\"hostPath\":{\"path\":\"c:/etc/kube-proxy\",\"type\":\"DirectoryOrCreate\"},\"name\":\"host-config\"},{\"hostPath\":{\"path\":\"c:/opt/bin\",\"type\":\"DirectoryOrCreate\"},\"name\":\"host-binary\"},{\"hostPath\":{\"path\":\"\\\\\\\\.\\\\pipe\\\\rancher_wins\"},\"name\":\"wins-pipe\"}]}},\"updateStrategy\":{\"type\":\"RollingUpdate\"}}}\n"
+        },
+        "managedFields": [
+          {
+            "manager": "kube-controller-manager",
+            "operation": "Update",
+            "apiVersion": "apps/v1",
+            "time": "2021-09-24T03:35:52Z",
+            "fieldsType": "FieldsV1",
+            "fieldsV1": {"f:status":{"f:observedGeneration":{}}}
+          },
+          {
+            "manager": "rc",
+            "operation": "Update",
+            "apiVersion": "apps/v1",
+            "time": "2021-09-24T03:35:52Z",
+            "fieldsType": "FieldsV1",
+            "fieldsV1": {"f:metadata":{"f:annotations":{".":{},"f:deprecated.daemonset.template.generation":{},"f:kubectl.kubernetes.io/last-applied-configuration":{}},"f:labels":{".":{},"f:k8s-app":{}}},"f:spec":{"f:revisionHistoryLimit":{},"f:selector":{},"f:template":{"f:metadata":{"f:annotations":{".":{},"f:scheduler.alpha.kubernetes.io/critical-pod":{}},"f:labels":{".":{},"f:k8s-app":{}}},"f:spec":{"f:affinity":{".":{},"f:nodeAffinity":{".":{},"f:requiredDuringSchedulingIgnoredDuringExecution":{".":{},"f:nodeSelectorTerms":{}}}},"f:containers":{"k:{\"name\":\"kube-proxy-worker\"}":{".":{},"f:command":{},"f:env":{".":{},"k:{\"name\":\"CLUSTER_SERVER\"}":{".":{},"f:name":{},"f:value":{}},"k:{\"name\":\"NODE_NAME\"}":{".":{},"f:name":{},"f:valueFrom":{".":{},"f:fieldRef":{".":{},"f:apiVersion":{},"f:fieldPath":{}}}}},"f:image":{},"f:imagePullPolicy":{},"f:name":{},"f:resources":{},"f:terminationMessagePath":{},"f:terminationMessagePolicy":{},"f:volumeMounts":{".":{},"k:{\"mountPath\":\"\\\\\\\\.\\\\pipe\\\\rancher_wins\"}":{".":{},"f:mountPath":{},"f:name":{}},"k:{\"mountPath\":\"c:/etc/kube-proxy\"}":{".":{},"f:mountPath":{},"f:name":{}},"k:{\"mountPath\":\"c:/host/etc/kube-proxy\"}":{".":{},"f:mountPath":{},"f:name":{}},"k:{\"mountPath\":\"c:/host/opt/bin\"}":{".":{},"f:mountPath":{},"f:name":{}}}}},"f:dnsPolicy":{},"f:hostNetwork":{},"f:priorityClassName":{},"f:restartPolicy":{},"f:schedulerName":{},"f:securityContext":{},"f:serviceAccount":{},"f:serviceAccountName":{},"f:terminationGracePeriodSeconds":{},"f:tolerations":{},"f:volumes":{".":{},"k:{\"name\":\"config\"}":{".":{},"f:configMap":{".":{},"f:defaultMode":{},"f:name":{}},"f:name":{}},"k:{\"name\":\"host-binary\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}},"k:{\"name\":\"host-config\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}},"k:{\"name\":\"wins-pipe\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}}}}},"f:updateStrategy":{"f:rollingUpdate":{".":{},"f:maxUnavailable":{}},"f:type":{}}}}
+          }
+        ]
+      },
+      "spec": {
+        "selector": {
+          "matchLabels": {
+            "k8s-app": "kube-proxy-worker-windows"
+          }
+        },
+        "template": {
+          "metadata": {
+            "creationTimestamp": null,
+            "labels": {
+              "k8s-app": "kube-proxy-worker-windows"
+            },
+            "annotations": {
+              "scheduler.alpha.kubernetes.io/critical-pod": ""
+            }
+          },
+          "spec": {
+            "volumes": [
+              {
+                "name": "config",
+                "configMap": {
+                  "name": "kube-proxy-worker-windows",
+                  "defaultMode": 420
+                }
+              },
+              {
+                "name": "host-config",
+                "hostPath": {
+                  "path": "c:/etc/kube-proxy",
+                  "type": "DirectoryOrCreate"
+                }
+              },
+              {
+                "name": "host-binary",
+                "hostPath": {
+                  "path": "c:/opt/bin",
+                  "type": "DirectoryOrCreate"
+                }
+              },
+              {
+                "name": "wins-pipe",
+                "hostPath": {
+                  "path": "\\\\.\\pipe\\rancher_wins",
+                  "type": ""
+                }
+              }
+            ],
+            "containers": [
+              {
+                "name": "kube-proxy-worker",
+                "image": "registry-vpc.cn-shenzhen.aliyuncs.com/acs/kube-proxy-windows:v1.20.4-aliyun.1",
+                "command": [
+                  "pwsh.exe",
+                  "-NoLogo",
+                  "-NonInteractive",
+                  "-File",
+                  "entrypoint.ps1"
+                ],
+                "env": [
+                  {
+                    "name": "CLUSTER_SERVER",
+                    "value": "https://10.0.0.182:6443"
+                  },
+                  {
+                    "name": "NODE_NAME",
+                    "valueFrom": {
+                      "fieldRef": {
+                        "apiVersion": "v1",
+                        "fieldPath": "spec.nodeName"
+                      }
+                    }
+                  }
+                ],
+                "resources": {
+                  
+                },
+                "volumeMounts": [
+                  {
+                    "name": "config",
+                    "mountPath": "c:/etc/kube-proxy"
+                  },
+                  {
+                    "name": "host-config",
+                    "mountPath": "c:/host/etc/kube-proxy"
+                  },
+                  {
+                    "name": "host-binary",
+                    "mountPath": "c:/host/opt/bin"
+                  },
+                  {
+                    "name": "wins-pipe",
+                    "mountPath": "\\\\.\\pipe\\rancher_wins"
+                  }
+                ],
+                "terminationMessagePath": "/dev/termination-log",
+                "terminationMessagePolicy": "File",
+                "imagePullPolicy": "IfNotPresent"
+              }
+            ],
+            "restartPolicy": "Always",
+            "terminationGracePeriodSeconds": 30,
+            "dnsPolicy": "ClusterFirst",
+            "serviceAccountName": "kube-proxy",
+            "serviceAccount": "kube-proxy",
+            "hostNetwork": true,
+            "securityContext": {
+              
+            },
+            "affinity": {
+              "nodeAffinity": {
+                "requiredDuringSchedulingIgnoredDuringExecution": {
+                  "nodeSelectorTerms": [
+                    {
+                      "matchExpressions": [
+                        {
+                          "key": "type",
+                          "operator": "NotIn",
+                          "values": [
+                            "virtual-kubelet"
+                          ]
+                        },
+                        {
+                          "key": "beta.kubernetes.io/os",
+                          "operator": "In",
+                          "values": [
+                            "windows"
+                          ]
+                        },
+                        {
+                          "key": "windows.alibabacloud.com/deployment-topology",
+                          "operator": "In",
+                          "values": [
+                            "2.0"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "matchExpressions": [
+                        {
+                          "key": "type",
+                          "operator": "NotIn",
+                          "values": [
+                            "virtual-kubelet"
+                          ]
+                        },
+                        {
+                          "key": "kubernetes.io/os",
+                          "operator": "In",
+                          "values": [
+                            "windows"
+                          ]
+                        },
+                        {
+                          "key": "windows.alibabacloud.com/deployment-topology",
+                          "operator": "In",
+                          "values": [
+                            "2.0"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "schedulerName": "default-scheduler",
+            "tolerations": [
+              {
+                "operator": "Exists"
+              }
+            ],
+            "priorityClassName": "system-node-critical"
+          }
+        },
+        "updateStrategy": {
+          "type": "RollingUpdate",
+          "rollingUpdate": {
+            "maxUnavailable": 1
+          }
+        },
+        "revisionHistoryLimit": 10
+      },
+      "status": {
+        "currentNumberScheduled": 0,
+        "numberMisscheduled": 0,
+        "desiredNumberScheduled": 0,
+        "numberReady": 0,
+        "observedGeneration": 1
+      }
+    },
+    {
+      "metadata": {
+        "name": "logtail-ds",
+        "namespace": "kube-system",
+        "uid": "3c73dca3-efa4-40da-b6c4-b969849b73ad",
+        "resourceVersion": "1500",
+        "generation": 1,
+        "creationTimestamp": "2021-09-24T03:35:53Z",
+        "labels": {
+          "k8s-app": "logtail-ds"
+        },
+        "annotations": {
+          "component.revision": "1",
+          "component.version": "0.16.62",
+          "deprecated.daemonset.template.generation": "1",
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"DaemonSet\",\"metadata\":{\"annotations\":{\"component.revision\":\"1\",\"component.version\":\"0.16.62\"},\"labels\":{\"k8s-app\":\"logtail-ds\"},\"name\":\"logtail-ds\",\"namespace\":\"kube-system\"},\"spec\":{\"selector\":{\"matchLabels\":{\"k8s-app\":\"logtail-ds\"}},\"template\":{\"metadata\":{\"annotations\":{\"scheduler.alpha.kubernetes.io/critical-pod\":\"\"},\"labels\":{\"k8s-app\":\"logtail-ds\"}},\"spec\":{\"affinity\":{\"nodeAffinity\":{\"requiredDuringSchedulingIgnoredDuringExecution\":{\"nodeSelectorTerms\":[{\"matchExpressions\":[{\"key\":\"type\",\"operator\":\"NotIn\",\"values\":[\"virtual-kubelet\"]}]}]}}},\"containers\":[{\"env\":[{\"name\":\"ALIYUN_LOGTAIL_CONFIG\",\"valueFrom\":{\"configMapKeyRef\":{\"key\":\"log-config-path\",\"name\":\"alibaba-log-configuration\"}}},{\"name\":\"ALIYUN_LOGTAIL_USER_ID\",\"valueFrom\":{\"configMapKeyRef\":{\"key\":\"log-ali-uid\",\"name\":\"alibaba-log-configuration\"}}},{\"name\":\"ALIYUN_LOGTAIL_USER_DEFINED_ID\",\"valueFrom\":{\"configMapKeyRef\":{\"key\":\"log-machine-group\",\"name\":\"alibaba-log-configuration\"}}},{\"name\":\"ALICLOUD_LOG_DOCKER_ENV_CONFIG\",\"value\":\"true\"},{\"name\":\"ALICLOUD_LOG_ECS_FLAG\",\"value\":\"true\"},{\"name\":\"ALICLOUD_LOG_DEFAULT_PROJECT\",\"valueFrom\":{\"configMapKeyRef\":{\"key\":\"log-project\",\"name\":\"alibaba-log-configuration\"}}},{\"name\":\"ALICLOUD_LOG_ENDPOINT\",\"valueFrom\":{\"configMapKeyRef\":{\"key\":\"log-endpoint\",\"name\":\"alibaba-log-configuration\"}}},{\"name\":\"ALICLOUD_LOG_DEFAULT_MACHINE_GROUP\",\"valueFrom\":{\"configMapKeyRef\":{\"key\":\"log-machine-group\",\"name\":\"alibaba-log-configuration\"}}},{\"name\":\"ALIYUN_LOG_ENV_TAGS\",\"value\":\"_node_name_|_node_ip_\"},{\"name\":\"_node_name_\",\"valueFrom\":{\"fieldRef\":{\"fieldPath\":\"spec.nodeName\"}}},{\"name\":\"_node_ip_\",\"valueFrom\":{\"fieldRef\":{\"fieldPath\":\"status.hostIP\"}}},{\"name\":\"cpu_usage_limit\",\"valueFrom\":{\"configMapKeyRef\":{\"key\":\"cpu-core-limit\",\"name\":\"alibaba-log-configuration\"}}},{\"name\":\"mem_usage_limit\",\"valueFrom\":{\"configMapKeyRef\":{\"key\":\"mem-limit\",\"name\":\"alibaba-log-configuration\"}}},{\"name\":\"max_bytes_per_sec\",\"valueFrom\":{\"configMapKeyRef\":{\"key\":\"max-bytes-per-sec\",\"name\":\"alibaba-log-configuration\"}}},{\"name\":\"send_request_concurrency\",\"valueFrom\":{\"configMapKeyRef\":{\"key\":\"send-requests-concurrency\",\"name\":\"alibaba-log-configuration\"}}},{\"name\":\"HTTP_PROBE_PORT\",\"value\":\"7953\"}],\"image\":\"registry-vpc.cn-shenzhen.aliyuncs.com/acs/logtail:v0.16.62.2-da583e0-aliyun\",\"livenessProbe\":{\"httpGet\":{\"path\":\"/liveness\",\"port\":7953,\"scheme\":\"HTTP\"},\"initialDelaySeconds\":35,\"periodSeconds\":60},\"name\":\"logtail\",\"resources\":{\"limits\":{\"cpu\":\"500m\",\"memory\":\"1024Mi\"},\"requests\":{\"cpu\":\"100m\",\"memory\":\"256Mi\"}},\"securityContext\":{\"privileged\":false,\"procMount\":\"Default\"},\"volumeMounts\":[{\"mountPath\":\"/var/run\",\"name\":\"run\"},{\"mountPath\":\"/logtail_host\",\"mountPropagation\":\"HostToContainer\",\"name\":\"root\",\"readOnly\":true},{\"mountPath\":\"/var/addon\",\"name\":\"addon-token\",\"readOnly\":true}]}],\"hostNetwork\":true,\"nodeSelector\":{\"beta.kubernetes.io/os\":\"linux\"},\"priorityClassName\":\"system-cluster-critical\",\"terminationGracePeriodSeconds\":30,\"tolerations\":[{\"operator\":\"Exists\"}],\"volumes\":[{\"hostPath\":{\"path\":\"/var/run\",\"type\":\"Directory\"},\"name\":\"run\"},{\"hostPath\":{\"path\":\"/\",\"type\":\"Directory\"},\"name\":\"root\"},{\"name\":\"addon-token\",\"secret\":{\"items\":[{\"key\":\"addon.token.config\",\"path\":\"token-config\"}],\"optional\":true,\"secretName\":\"addon.log.token\"}}]}},\"updateStrategy\":{\"rollingUpdate\":{\"maxUnavailable\":\"10%\"},\"type\":\"RollingUpdate\"}}}\n"
+        },
+        "managedFields": [
+          {
+            "manager": "rc",
+            "operation": "Update",
+            "apiVersion": "apps/v1",
+            "time": "2021-09-24T03:35:53Z",
+            "fieldsType": "FieldsV1",
+            "fieldsV1": {"f:metadata":{"f:annotations":{".":{},"f:component.revision":{},"f:component.version":{},"f:deprecated.daemonset.template.generation":{},"f:kubectl.kubernetes.io/last-applied-configuration":{}},"f:labels":{".":{},"f:k8s-app":{}}},"f:spec":{"f:revisionHistoryLimit":{},"f:selector":{},"f:template":{"f:metadata":{"f:annotations":{".":{},"f:scheduler.alpha.kubernetes.io/critical-pod":{}},"f:labels":{".":{},"f:k8s-app":{}}},"f:spec":{"f:affinity":{".":{},"f:nodeAffinity":{".":{},"f:requiredDuringSchedulingIgnoredDuringExecution":{".":{},"f:nodeSelectorTerms":{}}}},"f:containers":{"k:{\"name\":\"logtail\"}":{".":{},"f:env":{".":{},"k:{\"name\":\"ALICLOUD_LOG_DEFAULT_MACHINE_GROUP\"}":{".":{},"f:name":{},"f:valueFrom":{".":{},"f:configMapKeyRef":{".":{},"f:key":{},"f:name":{}}}},"k:{\"name\":\"ALICLOUD_LOG_DEFAULT_PROJECT\"}":{".":{},"f:name":{},"f:valueFrom":{".":{},"f:configMapKeyRef":{".":{},"f:key":{},"f:name":{}}}},"k:{\"name\":\"ALICLOUD_LOG_DOCKER_ENV_CONFIG\"}":{".":{},"f:name":{},"f:value":{}},"k:{\"name\":\"ALICLOUD_LOG_ECS_FLAG\"}":{".":{},"f:name":{},"f:value":{}},"k:{\"name\":\"ALICLOUD_LOG_ENDPOINT\"}":{".":{},"f:name":{},"f:valueFrom":{".":{},"f:configMapKeyRef":{".":{},"f:key":{},"f:name":{}}}},"k:{\"name\":\"ALIYUN_LOGTAIL_CONFIG\"}":{".":{},"f:name":{},"f:valueFrom":{".":{},"f:configMapKeyRef":{".":{},"f:key":{},"f:name":{}}}},"k:{\"name\":\"ALIYUN_LOGTAIL_USER_DEFINED_ID\"}":{".":{},"f:name":{},"f:valueFrom":{".":{},"f:configMapKeyRef":{".":{},"f:key":{},"f:name":{}}}},"k:{\"name\":\"ALIYUN_LOGTAIL_USER_ID\"}":{".":{},"f:name":{},"f:valueFrom":{".":{},"f:configMapKeyRef":{".":{},"f:key":{},"f:name":{}}}},"k:{\"name\":\"ALIYUN_LOG_ENV_TAGS\"}":{".":{},"f:name":{},"f:value":{}},"k:{\"name\":\"HTTP_PROBE_PORT\"}":{".":{},"f:name":{},"f:value":{}},"k:{\"name\":\"_node_ip_\"}":{".":{},"f:name":{},"f:valueFrom":{".":{},"f:fieldRef":{".":{},"f:apiVersion":{},"f:fieldPath":{}}}},"k:{\"name\":\"_node_name_\"}":{".":{},"f:name":{},"f:valueFrom":{".":{},"f:fieldRef":{".":{},"f:apiVersion":{},"f:fieldPath":{}}}},"k:{\"name\":\"cpu_usage_limit\"}":{".":{},"f:name":{},"f:valueFrom":{".":{},"f:configMapKeyRef":{".":{},"f:key":{},"f:name":{}}}},"k:{\"name\":\"max_bytes_per_sec\"}":{".":{},"f:name":{},"f:valueFrom":{".":{},"f:configMapKeyRef":{".":{},"f:key":{},"f:name":{}}}},"k:{\"name\":\"mem_usage_limit\"}":{".":{},"f:name":{},"f:valueFrom":{".":{},"f:configMapKeyRef":{".":{},"f:key":{},"f:name":{}}}},"k:{\"name\":\"send_request_concurrency\"}":{".":{},"f:name":{},"f:valueFrom":{".":{},"f:configMapKeyRef":{".":{},"f:key":{},"f:name":{}}}}},"f:image":{},"f:imagePullPolicy":{},"f:livenessProbe":{".":{},"f:failureThreshold":{},"f:httpGet":{".":{},"f:path":{},"f:port":{},"f:scheme":{}},"f:initialDelaySeconds":{},"f:periodSeconds":{},"f:successThreshold":{},"f:timeoutSeconds":{}},"f:name":{},"f:resources":{".":{},"f:limits":{".":{},"f:cpu":{},"f:memory":{}},"f:requests":{".":{},"f:cpu":{},"f:memory":{}}},"f:securityContext":{".":{},"f:privileged":{},"f:procMount":{}},"f:terminationMessagePath":{},"f:terminationMessagePolicy":{},"f:volumeMounts":{".":{},"k:{\"mountPath\":\"/logtail_host\"}":{".":{},"f:mountPath":{},"f:mountPropagation":{},"f:name":{},"f:readOnly":{}},"k:{\"mountPath\":\"/var/addon\"}":{".":{},"f:mountPath":{},"f:name":{},"f:readOnly":{}},"k:{\"mountPath\":\"/var/run\"}":{".":{},"f:mountPath":{},"f:name":{}}}}},"f:dnsPolicy":{},"f:hostNetwork":{},"f:nodeSelector":{".":{},"f:beta.kubernetes.io/os":{}},"f:priorityClassName":{},"f:restartPolicy":{},"f:schedulerName":{},"f:securityContext":{},"f:terminationGracePeriodSeconds":{},"f:tolerations":{},"f:volumes":{".":{},"k:{\"name\":\"addon-token\"}":{".":{},"f:name":{},"f:secret":{".":{},"f:defaultMode":{},"f:items":{},"f:optional":{},"f:secretName":{}}},"k:{\"name\":\"root\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}},"k:{\"name\":\"run\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}}}}},"f:updateStrategy":{"f:rollingUpdate":{".":{},"f:maxUnavailable":{}},"f:type":{}}}}
+          },
+          {
+            "manager": "kube-controller-manager",
+            "operation": "Update",
+            "apiVersion": "apps/v1",
+            "time": "2021-09-24T03:36:06Z",
+            "fieldsType": "FieldsV1",
+            "fieldsV1": {"f:status":{"f:currentNumberScheduled":{},"f:desiredNumberScheduled":{},"f:numberAvailable":{},"f:numberReady":{},"f:observedGeneration":{},"f:updatedNumberScheduled":{}}}
+          }
+        ]
+      },
+      "spec": {
+        "selector": {
+          "matchLabels": {
+            "k8s-app": "logtail-ds"
+          }
+        },
+        "template": {
+          "metadata": {
+            "creationTimestamp": null,
+            "labels": {
+              "k8s-app": "logtail-ds"
+            },
+            "annotations": {
+              "scheduler.alpha.kubernetes.io/critical-pod": ""
+            }
+          },
+          "spec": {
+            "volumes": [
+              {
+                "name": "run",
+                "hostPath": {
+                  "path": "/var/run",
+                  "type": "Directory"
+                }
+              },
+              {
+                "name": "root",
+                "hostPath": {
+                  "path": "/",
+                  "type": "Directory"
+                }
+              },
+              {
+                "name": "addon-token",
+                "secret": {
+                  "secretName": "addon.log.token",
+                  "items": [
+                    {
+                      "key": "addon.token.config",
+                      "path": "token-config"
+                    }
+                  ],
+                  "defaultMode": 420,
+                  "optional": true
+                }
+              }
+            ],
+            "containers": [
+              {
+                "name": "logtail",
+                "image": "registry-vpc.cn-shenzhen.aliyuncs.com/acs/logtail:v0.16.62.2-da583e0-aliyun",
+                "env": [
+                  {
+                    "name": "ALIYUN_LOGTAIL_CONFIG",
+                    "valueFrom": {
+                      "configMapKeyRef": {
+                        "name": "alibaba-log-configuration",
+                        "key": "log-config-path"
+                      }
+                    }
+                  },
+                  {
+                    "name": "ALIYUN_LOGTAIL_USER_ID",
+                    "valueFrom": {
+                      "configMapKeyRef": {
+                        "name": "alibaba-log-configuration",
+                        "key": "log-ali-uid"
+                      }
+                    }
+                  },
+                  {
+                    "name": "ALIYUN_LOGTAIL_USER_DEFINED_ID",
+                    "valueFrom": {
+                      "configMapKeyRef": {
+                        "name": "alibaba-log-configuration",
+                        "key": "log-machine-group"
+                      }
+                    }
+                  },
+                  {
+                    "name": "ALICLOUD_LOG_DOCKER_ENV_CONFIG",
+                    "value": "true"
+                  },
+                  {
+                    "name": "ALICLOUD_LOG_ECS_FLAG",
+                    "value": "true"
+                  },
+                  {
+                    "name": "ALICLOUD_LOG_DEFAULT_PROJECT",
+                    "valueFrom": {
+                      "configMapKeyRef": {
+                        "name": "alibaba-log-configuration",
+                        "key": "log-project"
+                      }
+                    }
+                  },
+                  {
+                    "name": "ALICLOUD_LOG_ENDPOINT",
+                    "valueFrom": {
+                      "configMapKeyRef": {
+                        "name": "alibaba-log-configuration",
+                        "key": "log-endpoint"
+                      }
+                    }
+                  },
+                  {
+                    "name": "ALICLOUD_LOG_DEFAULT_MACHINE_GROUP",
+                    "valueFrom": {
+                      "configMapKeyRef": {
+                        "name": "alibaba-log-configuration",
+                        "key": "log-machine-group"
+                      }
+                    }
+                  },
+                  {
+                    "name": "ALIYUN_LOG_ENV_TAGS",
+                    "value": "_node_name_|_node_ip_"
+                  },
+                  {
+                    "name": "_node_name_",
+                    "valueFrom": {
+                      "fieldRef": {
+                        "apiVersion": "v1",
+                        "fieldPath": "spec.nodeName"
+                      }
+                    }
+                  },
+                  {
+                    "name": "_node_ip_",
+                    "valueFrom": {
+                      "fieldRef": {
+                        "apiVersion": "v1",
+                        "fieldPath": "status.hostIP"
+                      }
+                    }
+                  },
+                  {
+                    "name": "cpu_usage_limit",
+                    "valueFrom": {
+                      "configMapKeyRef": {
+                        "name": "alibaba-log-configuration",
+                        "key": "cpu-core-limit"
+                      }
+                    }
+                  },
+                  {
+                    "name": "mem_usage_limit",
+                    "valueFrom": {
+                      "configMapKeyRef": {
+                        "name": "alibaba-log-configuration",
+                        "key": "mem-limit"
+                      }
+                    }
+                  },
+                  {
+                    "name": "max_bytes_per_sec",
+                    "valueFrom": {
+                      "configMapKeyRef": {
+                        "name": "alibaba-log-configuration",
+                        "key": "max-bytes-per-sec"
+                      }
+                    }
+                  },
+                  {
+                    "name": "send_request_concurrency",
+                    "valueFrom": {
+                      "configMapKeyRef": {
+                        "name": "alibaba-log-configuration",
+                        "key": "send-requests-concurrency"
+                      }
+                    }
+                  },
+                  {
+                    "name": "HTTP_PROBE_PORT",
+                    "value": "7953"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "500m",
+                    "memory": "1Gi"
+                  },
+                  "requests": {
+                    "cpu": "100m",
+                    "memory": "256Mi"
+                  }
+                },
+                "volumeMounts": [
+                  {
+                    "name": "run",
+                    "mountPath": "/var/run"
+                  },
+                  {
+                    "name": "root",
+                    "readOnly": true,
+                    "mountPath": "/logtail_host",
+                    "mountPropagation": "HostToContainer"
+                  },
+                  {
+                    "name": "addon-token",
+                    "readOnly": true,
+                    "mountPath": "/var/addon"
+                  }
+                ],
+                "livenessProbe": {
+                  "httpGet": {
+                    "path": "/liveness",
+                    "port": 7953,
+                    "scheme": "HTTP"
+                  },
+                  "initialDelaySeconds": 35,
+                  "timeoutSeconds": 1,
+                  "periodSeconds": 60,
+                  "successThreshold": 1,
+                  "failureThreshold": 3
+                },
+                "terminationMessagePath": "/dev/termination-log",
+                "terminationMessagePolicy": "File",
+                "imagePullPolicy": "IfNotPresent",
+                "securityContext": {
+                  "privileged": false,
+                  "procMount": "Default"
+                }
+              }
+            ],
+            "restartPolicy": "Always",
+            "terminationGracePeriodSeconds": 30,
+            "dnsPolicy": "ClusterFirst",
+            "nodeSelector": {
+              "beta.kubernetes.io/os": "linux"
+            },
+            "hostNetwork": true,
+            "securityContext": {
+              
+            },
+            "affinity": {
+              "nodeAffinity": {
+                "requiredDuringSchedulingIgnoredDuringExecution": {
+                  "nodeSelectorTerms": [
+                    {
+                      "matchExpressions": [
+                        {
+                          "key": "type",
+                          "operator": "NotIn",
+                          "values": [
+                            "virtual-kubelet"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "schedulerName": "default-scheduler",
+            "tolerations": [
+              {
+                "operator": "Exists"
+              }
+            ],
+            "priorityClassName": "system-cluster-critical"
+          }
+        },
+        "updateStrategy": {
+          "type": "RollingUpdate",
+          "rollingUpdate": {
+            "maxUnavailable": "10%"
+          }
+        },
+        "revisionHistoryLimit": 10
+      },
+      "status": {
+        "currentNumberScheduled": 3,
+        "numberMisscheduled": 0,
+        "desiredNumberScheduled": 3,
+        "numberReady": 3,
+        "observedGeneration": 1,
+        "updatedNumberScheduled": 3,
+        "numberAvailable": 3
+      }
+    },
+    {
+      "metadata": {
+        "name": "node-local-dns",
+        "namespace": "kube-system",
+        "uid": "413242be-0f8c-47d0-abff-713aca25a974",
+        "resourceVersion": "1878",
+        "generation": 1,
+        "creationTimestamp": "2021-09-24T03:35:57Z",
+        "labels": {
+          "addonmanager.kubernetes.io/mode": "Reconcile",
+          "k8s-app": "node-local-dns",
+          "kubernetes.io/cluster-service": "true"
+        },
+        "annotations": {
+          "deprecated.daemonset.template.generation": "1"
+        },
+        "managedFields": [
+          {
+            "manager": "Go-http-client",
+            "operation": "Update",
+            "apiVersion": "apps/v1",
+            "time": "2021-09-24T03:35:57Z",
+            "fieldsType": "FieldsV1",
+            "fieldsV1": {"f:metadata":{"f:annotations":{".":{},"f:deprecated.daemonset.template.generation":{}},"f:labels":{".":{},"f:addonmanager.kubernetes.io/mode":{},"f:k8s-app":{},"f:kubernetes.io/cluster-service":{}}},"f:spec":{"f:revisionHistoryLimit":{},"f:selector":{},"f:template":{"f:metadata":{"f:labels":{".":{},"f:k8s-app":{}}},"f:spec":{"f:affinity":{".":{},"f:nodeAffinity":{".":{},"f:requiredDuringSchedulingIgnoredDuringExecution":{".":{},"f:nodeSelectorTerms":{}}}},"f:containers":{"k:{\"name\":\"node-cache\"}":{".":{},"f:args":{},"f:image":{},"f:imagePullPolicy":{},"f:livenessProbe":{".":{},"f:failureThreshold":{},"f:httpGet":{".":{},"f:host":{},"f:path":{},"f:port":{},"f:scheme":{}},"f:initialDelaySeconds":{},"f:periodSeconds":{},"f:successThreshold":{},"f:timeoutSeconds":{}},"f:name":{},"f:resources":{".":{},"f:limits":{".":{},"f:memory":{}},"f:requests":{".":{},"f:cpu":{},"f:memory":{}}},"f:securityContext":{".":{},"f:privileged":{}},"f:terminationMessagePath":{},"f:terminationMessagePolicy":{},"f:volumeMounts":{".":{},"k:{\"mountPath\":\"/etc/coredns\"}":{".":{},"f:mountPath":{},"f:name":{}},"k:{\"mountPath\":\"/run/xtables.lock\"}":{".":{},"f:mountPath":{},"f:name":{}}}}},"f:dnsPolicy":{},"f:hostNetwork":{},"f:initContainers":{".":{},"k:{\"name\":\"init-sysctl\"}":{".":{},"f:command":{},"f:image":{},"f:imagePullPolicy":{},"f:name":{},"f:resources":{},"f:securityContext":{".":{},"f:capabilities":{".":{},"f:add":{},"f:drop":{}}},"f:terminationMessagePath":{},"f:terminationMessagePolicy":{}}},"f:nodeSelector":{".":{},"f:beta.kubernetes.io/os":{}},"f:priorityClassName":{},"f:restartPolicy":{},"f:schedulerName":{},"f:securityContext":{},"f:serviceAccount":{},"f:serviceAccountName":{},"f:terminationGracePeriodSeconds":{},"f:tolerations":{},"f:volumes":{".":{},"k:{\"name\":\"config-volume\"}":{".":{},"f:configMap":{".":{},"f:defaultMode":{},"f:items":{},"f:name":{}},"f:name":{}},"k:{\"name\":\"xtables-lock\"}":{".":{},"f:hostPath":{".":{},"f:path":{},"f:type":{}},"f:name":{}}}}},"f:updateStrategy":{"f:rollingUpdate":{".":{},"f:maxUnavailable":{}},"f:type":{}}}}
+          },
+          {
+            "manager": "kube-controller-manager",
+            "operation": "Update",
+            "apiVersion": "apps/v1",
+            "time": "2021-09-24T03:36:49Z",
+            "fieldsType": "FieldsV1",
+            "fieldsV1": {"f:status":{"f:currentNumberScheduled":{},"f:desiredNumberScheduled":{},"f:numberAvailable":{},"f:numberReady":{},"f:observedGeneration":{},"f:updatedNumberScheduled":{}}}
+          }
+        ]
+      },
+      "spec": {
+        "selector": {
+          "matchLabels": {
+            "k8s-app": "node-local-dns"
+          }
+        },
+        "template": {
+          "metadata": {
+            "creationTimestamp": null,
+            "labels": {
+              "k8s-app": "node-local-dns"
+            }
+          },
+          "spec": {
+            "volumes": [
+              {
+                "name": "xtables-lock",
+                "hostPath": {
+                  "path": "/run/xtables.lock",
+                  "type": "FileOrCreate"
+                }
+              },
+              {
+                "name": "config-volume",
+                "configMap": {
+                  "name": "node-local-dns",
+                  "items": [
+                    {
+                      "key": "Corefile",
+                      "path": "Corefile"
+                    }
+                  ],
+                  "defaultMode": 420
+                }
+              }
+            ],
+            "initContainers": [
+              {
+                "name": "init-sysctl",
+                "image": "registry-vpc.cn-shenzhen.aliyuncs.com/acs/busybox:v1.29.2",
+                "command": [
+                  "/bin/sh",
+                  "-c",
+                  "mount -o remount rw /proc/sys\nsysctl -w net.ipv4.icmp_ratemask=6160\n"
+                ],
+                "resources": {
+                  
+                },
+                "terminationMessagePath": "/dev/termination-log",
+                "terminationMessagePolicy": "File",
+                "imagePullPolicy": "IfNotPresent",
+                "securityContext": {
+                  "capabilities": {
+                    "add": [
+                      "SYS_ADMIN"
+                    ],
+                    "drop": [
+                      "ALL"
+                    ]
+                  }
+                }
+              }
+            ],
+            "containers": [
+              {
+                "name": "node-cache",
+                "image": "registry-vpc.cn-shenzhen.aliyuncs.com/acs/k8s-dns-node-cache:v1.15.13-6-7e6778ac",
+                "args": [
+                  "-localip",
+                  "169.254.20.10",
+                  "-conf",
+                  "/etc/coredns/Corefile",
+                  "-upstreamsvc",
+                  "kube-dns",
+                  "-setupiptables=true",
+                  "-skipteardown=true",
+                  "-forwardonexit=false"
+                ],
+                "resources": {
+                  "limits": {
+                    "memory": "1Gi"
+                  },
+                  "requests": {
+                    "cpu": "25m",
+                    "memory": "5Mi"
+                  }
+                },
+                "volumeMounts": [
+                  {
+                    "name": "xtables-lock",
+                    "mountPath": "/run/xtables.lock"
+                  },
+                  {
+                    "name": "config-volume",
+                    "mountPath": "/etc/coredns"
+                  }
+                ],
+                "livenessProbe": {
+                  "httpGet": {
+                    "path": "/health",
+                    "port": 8081,
+                    "host": "169.254.20.10",
+                    "scheme": "HTTP"
+                  },
+                  "initialDelaySeconds": 60,
+                  "timeoutSeconds": 5,
+                  "periodSeconds": 10,
+                  "successThreshold": 1,
+                  "failureThreshold": 3
+                },
+                "terminationMessagePath": "/dev/termination-log",
+                "terminationMessagePolicy": "File",
+                "imagePullPolicy": "IfNotPresent",
+                "securityContext": {
+                  "privileged": true
+                }
+              }
+            ],
+            "restartPolicy": "Always",
+            "terminationGracePeriodSeconds": 30,
+            "dnsPolicy": "Default",
+            "nodeSelector": {
+              "beta.kubernetes.io/os": "linux"
+            },
+            "serviceAccountName": "node-local-dns",
+            "serviceAccount": "node-local-dns",
+            "hostNetwork": true,
+            "securityContext": {
+              
+            },
+            "affinity": {
+              "nodeAffinity": {
+                "requiredDuringSchedulingIgnoredDuringExecution": {
+                  "nodeSelectorTerms": [
+                    {
+                      "matchExpressions": [
+                        {
+                          "key": "type",
+                          "operator": "NotIn",
+                          "values": [
+                            "virtual-kubelet"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "schedulerName": "default-scheduler",
+            "tolerations": [
+              {
+                "key": "CriticalAddonsOnly",
+                "operator": "Exists"
+              }
+            ],
+            "priorityClassName": "system-node-critical"
+          }
+        },
+        "updateStrategy": {
+          "type": "RollingUpdate",
+          "rollingUpdate": {
+            "maxUnavailable": "10%"
+          }
+        },
+        "revisionHistoryLimit": 10
+      },
+      "status": {
+        "currentNumberScheduled": 3,
+        "numberMisscheduled": 0,
+        "desiredNumberScheduled": 3,
+        "numberReady": 3,
+        "observedGeneration": 1,
+        "updatedNumberScheduled": 3,
+        "numberAvailable": 3
+      }
+    }
+  ]
+}

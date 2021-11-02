@@ -1,0 +1,312 @@
+{
+    "items": [
+        {
+            "uid": "cn-qingdao",
+            "arg": "cn-qingdao",
+            "title": "Qingdao",
+            "subtitle":  "cn-qingdao",
+            "icon": {
+                "path": "./icon/flag/CHN.png"
+            },
+            "mods": {
+                "alt": {
+                    "subtitle": "cn-qingdao-cm5-a01"
+                }
+            }
+        },
+        {
+            "uid": "cn-beijing",
+            "arg": "cn-beijing",
+            "title": "Beijing",
+            "subtitle":  "cn-beijing",
+            "icon": {
+                "path": "./icon/flag/CHN.png"
+            },
+            "mods": {
+                "alt": {
+                    "subtitle": "cn-beijing-btc-a01"
+                }
+            }
+        },
+        {
+            "uid": "cn-hangzhou",
+            "arg": "cn-hangzhou",
+            "title": "Hangzhou",
+            "subtitle":  "cn-hangzhou",
+            "icon": {
+                "path": "./icon/flag/CHN.png"
+            },
+            "mods": {
+                "alt": {
+                    "subtitle": "cn-hangzhou-dg-a01"
+                }
+            }
+        },
+        {
+            "uid": "cn-shanghai",
+            "arg": "cn-shanghai",
+            "title": "Shanghai",
+            "subtitle":  "cn-shanghai",
+            "icon": {
+                "path": "./icon/flag/CHN.png"
+            },
+            "mods": {
+                "alt": {
+                    "subtitle": "cn-shanghai-eu13-a01"
+                }
+            }
+        },
+        {
+            "uid": "cn-shenzhen",
+            "arg": "cn-shenzhen",
+            "title": "Shenzhen",
+            "subtitle":  "cn-shenzhen",
+            "icon": {
+                "path": "./icon/flag/CHN.png"
+            },
+            "mods": {
+                "alt": {
+                    "subtitle": "cn-shenzhen-st3-a01"
+                }
+            }
+        },
+        {
+            "uid": "cn-huhehaote",
+            "arg": "cn-huhehaote",
+            "title": "Huhehaote",
+            "subtitle":  "cn-huhehaote",
+            "icon": {
+                "path": "./icon/flag/CHN.png"
+            },
+            "mods": {
+                "alt": {
+                    "subtitle": "cn-huhehaote-nt12-a01"
+                }
+            }
+        },
+        {
+            "uid": "cn-wulanchabu",
+            "arg": "cn-wulanchabu",
+            "title": "Wulanchabu",
+            "subtitle":  "cn-wulanchabu",
+            "icon": {
+                "path": "./icon/flag/CHN.png"
+            },
+            "mods": {
+                "alt": {
+                    "subtitle": "cn-wulanchabu-nt47-a01"
+                }
+            }
+        },
+        {
+            "uid": "cn-zhangjiakou",
+            "arg": "cn-zhangjiakou",
+            "title": "Zhangjiakou",
+            "subtitle":  "cn-zhangjiakou",
+            "icon": {
+                "path": "./icon/flag/CHN.png"
+            },
+            "mods": {
+                "alt": {
+                    "subtitle": "cn-zhangjiakou-na62-a01"
+                }
+            }
+        },
+        {
+            "uid": "cn-chengdu",
+            "arg": "cn-chengdu",
+            "title": "Chengdu",
+            "subtitle":  "cn-chengdu",
+            "icon": {
+                "path": "./icon/flag/CHN.png"
+            },
+            "mods": {
+                "alt": {
+                    "subtitle": "cn-chengdu"
+                }
+            }
+        },
+        {
+            "uid": "cn-heyuan",
+            "arg": "cn-heyuan",
+            "title": "Heyuan",
+            "subtitle":  "cn-heyuan",
+            "icon": {
+                "path": "./icon/flag/CHN.png"
+            },
+            "mods": {
+                "alt": {
+                    "subtitle": "cn-heyuan"
+                }
+            }
+        },
+        {
+            "uid": "cn-hongkong",
+            "arg": "cn-hongkong",
+            "title": "Hongkong",
+            "subtitle":  "cn-hongkong",
+            "icon": {
+                "path": "./icon/flag/CHN.png"
+            },
+            "mods": {
+                "alt": {
+                    "subtitle": "cn-hongkong-am4-c04"
+                }
+            }
+        },
+        {
+            "uid": "ap-northeast-1",
+            "arg": "ap-northeast-1",
+            "title": "Japan - Tokyo",
+            "subtitle":  "ap-northeast-1",
+            "icon": {
+                "path": "./icon/flag/JPN.png"
+            },
+            "mods": {
+                "alt": {
+                    "subtitle": "ap-northeast-1"
+                }
+            }
+        },
+        {
+            "uid": "ap-southeast-1",
+            "arg": "ap-southeast-1",
+            "title": "Singapore",
+            "subtitle":  "ap-southeast-1",
+            "icon": {
+                "path": "./icon/flag/SGP.png"
+            },
+            "mods": {
+                "alt": {
+                    "subtitle": "ap-southeast-1"
+                }
+            }
+        },
+        {
+            "uid": "ap-southeast-2",
+            "arg": "ap-southeast-2",
+            "title": "Australia",
+            "subtitle":  "ap-southeast-2",
+            "icon": {
+                "path": "./icon/flag/AUS.png"
+            },
+            "mods": {
+                "alt": {
+                    "subtitle": "ap-southeast-au49-a01"
+                }
+            }
+        },
+        {
+            "uid": "ap-southeast-3",
+            "arg": "ap-southeast-3",
+            "title": "Malaysia - Kuala Lumpur",
+            "subtitle":  "ap-southeast-3",
+            "icon": {
+                "path": "./icon/flag/MYS.png"
+            },
+            "mods": {
+                "alt": {
+                    "subtitle": "ap-southeast-au49-a01"
+                }
+            }
+        },
+        {
+            "uid": "ap-southeast-5",
+            "arg": "ap-southeast-5",
+            "title": "Indonesia - Jakarta",
+            "subtitle":  "ap-southeast-5",
+            "icon": {
+                "path": "./icon/flag/IDA.png"
+            },
+            "mods": {
+                "alt": {
+                    "subtitle": "ap-southeast-id35-a01"
+                }
+            }
+        },
+        {
+            "uid": "me-east-1",
+            "arg": "me-east-1",
+            "title": "Dubai",
+            "subtitle":  "me-east-1",
+            "icon": {
+                "path": "./icon/flag/ARE.png"
+            },
+            "mods": {
+                "alt": {
+                    "subtitle": "me-east-db47-a01"
+                }
+            }
+        },
+        {
+            "uid": "ap-south-1",
+            "arg": "ap-south-1",
+            "title": "India - Bombay",
+            "subtitle":  "ap-south-1",
+            "icon": {
+                "path": "./icon/flag/IND.png"
+            },
+            "mods": {
+                "alt": {
+                    "subtitle": "ap-south-in73-a01"
+                }
+            }
+        },
+        {
+            "uid": "eu-central-1",
+            "arg": "eu-central-1",
+            "title": "Germany - Frankfurt",
+            "subtitle":  "eu-central-1",
+            "icon": {
+                "path": "./icon/flag/DEU.png"
+            },
+            "mods": {
+                "alt": {
+                    "subtitle": "eu-central-de46-a01"
+                }
+            }
+        },
+        {
+            "uid": "eu-west-1",
+            "arg": "eu-west-1",
+            "title": "England London",
+            "subtitle":  "eu-west-1",
+            "icon": {
+                "path": "./icon/flag/GBR.png"
+            },
+            "mods": {
+                "alt": {
+                    "subtitle": "eu-west-gb33-a01"
+                }
+            }
+        },
+        {
+            "uid": "us-west-1",
+            "arg": "us-west-1",
+            "title": "USA Silicon Valley",
+            "subtitle":  "us-west-1",
+            "icon": {
+                "path": "./icon/flag/USA.png"
+            },
+            "mods": {
+                "alt": {
+                    "subtitle": "us-west-ot7-a01"
+                }
+            }
+        },
+        {
+            "uid": "us-east-1",
+            "arg": "us-east-1",
+            "title": "USA Virginia",
+            "subtitle":  "us-east-1",
+            "icon": {
+                "path": "./icon/flag/USA.png"
+            },
+            "mods": {
+                "alt": {
+                    "subtitle": "us-east-us44-a01"
+                }
+            }
+        }
+    ]
+}
